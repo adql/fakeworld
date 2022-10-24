@@ -6,9 +6,17 @@ import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 
 main :: IO ()
-main = simpleMain homePage
+main = defaultMain tui initialSt
 
-type Name = () --placeholder
+-- placeholders for the App type variables
+type Name = ()
+type St = ()
+
+initialSt :: St
+initialSt = ()
+
+tui :: App St e Name
+tui = simpleApp homePage
 
 homePage :: Widget Name
 homePage = navigation
