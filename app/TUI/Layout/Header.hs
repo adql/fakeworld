@@ -15,17 +15,14 @@ navigation :: Widget Name
 navigation =
   padTopBottom 1 $
   limitWidthAndCenter $
-  (str "conduit" & padRight Max) <+>
+  (conduit & padRight Max) <+>
   str "Home   Sign in   Sign up"  
 
 banner :: Widget Name
 banner =
-  vBox [ B.hBorder &
-         padBottom (Pad 2)
-       , C.hCenter $ str "conduit" &
+  withAttr (attrName "banner") $
+  padTopBottom 2 $
+  vBox [ C.hCenter $ str "conduit" &
          padBottom (Pad 1)
        , C.hCenter $ str "a place to share your knowledge"
-       , padTop (Pad 2) $
-         B.hBorder
        ]
-

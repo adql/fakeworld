@@ -64,6 +64,7 @@ executable fakeworld
         TUI.Layout.Footer
         TUI.Layout.Header
         TUI.Pages.HomePage
+        TUI.Style
         TUI.Types
 
     -- LANGUAGE extensions used by modules in this package.
@@ -73,6 +74,7 @@ executable fakeworld
     build-depends:
         base ^>=4.16.3.0
       , brick ^>=1.4
+      , vty ^>=5.37
 
     -- Directories containing source files.
     hs-source-dirs:   app
