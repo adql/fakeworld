@@ -72,9 +72,11 @@ executable fakeworld
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base ^>=4.16.3.0
-      , brick ^>=1.4
-      , vty ^>=5.37
+                    aeson ^>=2.1.1.0
+                  , base ^>=4.16.3.0
+                  , brick ^>=1.4
+                  , text ^>=2.0.1
+                  , vty ^>=5.37
 
     -- Directories containing source files.
     hs-source-dirs:   app
