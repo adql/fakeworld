@@ -59,6 +59,10 @@ executable fakeworld
 
     -- Modules included in this executable, other than Main.
     other-modules:
+        API.Defaults
+        API.Request
+        API.Request.Endpoints
+        API.Request.Types
         API.Response.Types
         TUI
         TUI.Common
@@ -76,6 +80,9 @@ executable fakeworld
                     aeson ^>=2.1.1.0
                   , base ^>=4.16.3.0
                   , brick ^>=1.4
+                  , bytestring >= 0.11.3.1
+                  , http-conduit ^>=2.3.8
+                  , http-types ^>=0.12.3
                   , text ^>=2.0.1
                   , vty ^>=5.37
 
