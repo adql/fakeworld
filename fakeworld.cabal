@@ -59,6 +59,7 @@ executable fakeworld
 
     -- Modules included in this executable, other than Main.
     other-modules:
+        API.Response.Types
         TUI
         TUI.Common
         TUI.Layout.Footer
