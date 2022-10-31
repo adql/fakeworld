@@ -4,6 +4,9 @@
 {-# LANGUAGE DeriveGeneric #-}
 module API.Response.Types
   ( Article(..)
+  , Articles(..)
+  , Comment(..)
+  , Comments(..)
   , Profile(..)
   , Tags(..)
   , User(..)
