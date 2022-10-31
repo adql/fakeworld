@@ -83,8 +83,8 @@ instance FromJSON Comments where
 
 optionalUnwrapAndParse :: (Generic a, GFromJSON Zero (Rep a)) =>
                           Key.Key -> Value -> Parser a
-optionalUnwrapAndParse key val0 = case val0 of
-  Object o -> do
-    val <- o .:? key .!= Object o
-    genericParseJSON defaultOptions val
-  val -> genericParseJSON defaultOptions val
+optionalUnwrapAndParse key val0 = do
+  val <- case val0 of
+           Object obj -> obj .:? key .!= Object obj
+           val' -> return val'
+  genericParseJSON defaultOptions val
