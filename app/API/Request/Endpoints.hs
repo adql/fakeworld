@@ -1,5 +1,6 @@
 module API.Request.Endpoints
-  ( profiles
+  ( articles
+  , profiles
   , tags
   ) where
 
@@ -10,3 +11,6 @@ profiles = "/profiles/"
 
 tags :: Endpoint
 tags = "/tags"
+
+articles :: Endpoint
+articles = "/articles"

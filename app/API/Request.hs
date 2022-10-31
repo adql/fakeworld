@@ -1,5 +1,8 @@
 module API.Request
-  ( requestProfile
+  ( requestArticle
+  , requestArticleList
+  , requestComments
+  , requestProfile
   , requestTags
   ) where
 
@@ -18,6 +21,22 @@ requestProfile name = do
 requestTags :: IO (Either JSONException Tags)
 requestTags = do
   request <- parseRequest $ conduitDemoAPI <> EP.tags
+  execJSONRequest request
+
+requestArticleList :: Query -> IO (Either JSONException Articles)
+requestArticleList query = do
+  request <- setRequestQueryString query <$>
+             ( parseRequest $ conduitDemoAPI <> EP.articles )
+  execJSONRequest request
+
+requestArticle :: String -> IO (Either JSONException Article)
+requestArticle slug' = do
+  request <- parseRequest $ conduitDemoAPI <> EP.articles <> "/" <> slug'
+  execJSONRequest request
+
+requestComments :: String -> IO (Either JSONException Comments)
+requestComments slug' = do
+  request <- parseRequest $ conduitDemoAPI <> EP.articles <> "/" <> slug' <> "/comments"
   execJSONRequest request
 
 execJSONRequest :: FromJSON a => Request -> IO (Either JSONException a)
