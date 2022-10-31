@@ -22,7 +22,7 @@ data Profile = Profile
   } deriving (Generic, Show)
 
 instance FromJSON Profile where
-  parseJSON = unwrapParseJSON "profile"
+  parseJSON = optionalUnwrapAndParse "profile"
 
 data User = User
   { email    :: Text
@@ -33,15 +33,17 @@ data User = User
   } deriving (Generic, Show)
 
 instance FromJSON User where
-  parseJSON = unwrapParseJSON "user"
+  parseJSON = optionalUnwrapAndParse "user"
 
 data Tags = Tags [Text] deriving (Generic, Show)
 
 instance FromJSON Tags where
-  parseJSON = unwrapParseJSON "tags"
+  parseJSON = optionalUnwrapAndParse "tags"
 
-unwrapParseJSON :: (Generic a, GFromJSON Zero (Rep a)) =>
-                   Key.Key -> Value -> Parser a
-unwrapParseJSON key = withObject (Key.toString key) $ \o -> do
-  inner <- o .: key
-  genericParseJSON defaultOptions inner
+optionalUnwrapAndParse :: (Generic a, GFromJSON Zero (Rep a)) =>
+                          Key.Key -> Value -> Parser a
+optionalUnwrapAndParse key val0 = case val0 of
+  Object o -> do
+    val <- o .:? key .!= Object o
+    genericParseJSON defaultOptions val
+  val -> genericParseJSON defaultOptions val
