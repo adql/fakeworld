@@ -84,6 +84,7 @@ executable fakeworld
                   , http-conduit ^>=2.3.8
                   , http-types ^>=0.12.3
                   , text ^>=2.0.1
+                  , time ^>=1.12.2
                   , vty ^>=5.37
 
     -- Directories containing source files.

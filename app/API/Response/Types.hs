@@ -3,7 +3,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 module API.Response.Types
-  ( Profile(..)
+  ( Article(..)
+  , Profile(..)
   , Tags(..)
   , User(..)
   ) where
@@ -13,6 +14,7 @@ import qualified Data.Aeson.Key as Key
 import Data.Aeson.Types (Parser)
 import Data.Text (Text)
 import GHC.Generics
+import Data.Time.Clock (UTCTime)
 
 data Profile = Profile
   { username  :: Text
@@ -39,6 +41,45 @@ data Tags = Tags [Text] deriving (Generic, Show)
 
 instance FromJSON Tags where
   parseJSON = optionalUnwrapAndParse "tags"
+
+data Article = Article
+  { slug :: Text
+  , title :: Text
+  , description :: Text
+  , body :: Text
+  , tagList :: Tags
+  , createdAt :: UTCTime
+  , updatedAt :: UTCTime
+  , favorited :: Bool
+  , favoritesCount :: Int
+  , author :: Profile
+  } deriving (Generic, Show)
+
+instance FromJSON Article where
+  parseJSON = optionalUnwrapAndParse "article"
+
+data Articles = Articles [Article]
+  deriving (Generic, Show)
+
+instance FromJSON Articles where
+  parseJSON = optionalUnwrapAndParse "articles"
+
+data Comment = Comment
+  { id :: Int
+  , createdAt :: UTCTime
+  , updatedAt :: UTCTime
+  , body :: Text
+  , author :: Profile
+  } deriving (Generic, Show)
+
+instance FromJSON Comment where
+  parseJSON = optionalUnwrapAndParse "comment"
+
+data Comments = Comments [Comment]
+  deriving (Generic, Show)
+
+instance FromJSON Comments where
+  parseJSON = optionalUnwrapAndParse "comments"
 
 optionalUnwrapAndParse :: (Generic a, GFromJSON Zero (Rep a)) =>
                           Key.Key -> Value -> Parser a
