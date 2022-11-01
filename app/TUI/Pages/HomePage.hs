@@ -29,7 +29,7 @@ feed :: Widget Name
 feed =
   B.border $
   C.hCenter (str "<global feed>")
-  <=> vLimit 34 ( fill ' ' )
+  <=> vLimit 60 ( fill ' ' ) --arbitrary height for dummy tests
 
 tags :: Widget Name
 tags =
