@@ -68,6 +68,7 @@ executable fakeworld
         TUI.Common
         TUI.Layout.Footer
         TUI.Layout.Header
+        TUI.Pages
         TUI.Pages.HomePage
         TUI.Style
         TUI.Types

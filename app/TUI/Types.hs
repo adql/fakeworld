@@ -1,8 +1,9 @@
 module TUI.Types
-  ( Name
+  ( Name(..)
   , St
   ) where
 
 -- placeholders for the App type variables
-type Name = ()
+data Name = MainViewport
+  deriving (Show, Eq, Ord)
 type St = ()
