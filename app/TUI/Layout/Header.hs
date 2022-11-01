@@ -4,7 +4,6 @@ module TUI.Layout.Header
   ) where
 
 import Brick
-import qualified Brick.Widgets.Border as B
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 
