@@ -14,5 +14,9 @@ initialSt :: St
 initialSt = ()
 
 tui :: App St e Name
-tui = ( simpleApp (mainViewport homePage) )
-      { appAttrMap = const theMap }
+tui = App { appDraw = const [mainViewport homePage]
+          , appChooseCursor = neverShowCursor
+          , appHandleEvent = resizeOrQuit
+          , appStartEvent = return ()
+          , appAttrMap = const theMap
+          }
