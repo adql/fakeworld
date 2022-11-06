@@ -6,3 +6,4 @@ import TUI
 
 main :: IO ()
 main = defaultMain tui initialSt
+  >>= \_ -> return ()

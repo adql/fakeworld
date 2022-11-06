@@ -1,9 +1,20 @@
 module TUI.Types
   ( Name(..)
-  , St
+  , Page(..)
+  , St(..)
   ) where
 
--- placeholders for the App type variables
 data Name = MainViewport
   deriving (Show, Eq, Ord)
-type St = ()
+
+data St = St
+  { currentPage :: Page
+  , homeArticleOffset :: Int
+  }
+
+data Page = Home
+          | LoginRegister
+          | Profile
+          | Settings
+          | CreateEditArticle
+          | Article

@@ -12,7 +12,10 @@ import TUI.Style
 import TUI.Types
 
 initialSt :: St
-initialSt = ()
+initialSt = St
+  { currentPage = Home
+  , homeArticleOffset = 0
+  }
 
 tui :: App St e Name
 tui = App { appDraw = const [mainViewport homePage]
