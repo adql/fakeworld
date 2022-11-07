@@ -13,7 +13,7 @@ import TUI.Types
 
 initialSt :: St
 initialSt = St
-  { currentPage = Home
+  { currentPage = HomePage
   , homeArticleOffset = 0
   }
 

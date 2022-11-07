@@ -12,9 +12,9 @@ data St = St
   , homeArticleOffset :: Int
   }
 
-data Page = Home
-          | LoginRegister
-          | Profile
-          | Settings
-          | CreateEditArticle
-          | Article
+data Page = HomePage
+          | LoginRegisterPage
+          | ProfilePage
+          | SettingsPage
+          | CreateEditArticlePage
+          | ArticlePage
