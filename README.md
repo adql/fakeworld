@@ -1,6 +1,6 @@
 # FakeWorld #
 
-_FakeWorld_ is a non-standard _text user interface_ (_TUI_) version of the (RealWorld)[https://github.com/gothinkster/realworld] demo Medium.com clone.
+_FakeWorld_ is a non-standard _text user interface_ (_TUI_) version of the [RealWorld](https://github.com/gothinkster/realworld) demo Medium.com clone.
 
 ## Why? ##
 
