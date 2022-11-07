@@ -10,6 +10,7 @@ theMap = attrMap VA.defAttr
          [ (attrName "banner", VA.brightWhite `on` conduitGreen)
          , (attrName "conduit", VA.withStyle (fg conduitGreen) VA.bold)
          , (attrName "mainGreen", fg conduitGreen)
+         , (attrName "pale", fg VA.brightBlack)
          ]
 
 conduitGreen :: VA.Color

@@ -32,13 +32,13 @@ content st =
 
 feed :: [Article] -> Widget Name
 feed articles =
-  vBox $ intersperse (str " ") $
+  padRight (Pad 1) $
+  vBox $ intersperse feedSeparator $
   articlePreview <$> articles
   
 articlePreview :: Article -> Widget Name
 articlePreview article =
-  ( articlePreviewHeader article &
-    padBottom (Pad 1) )
+  articlePreviewHeader article
   <=>
   (txt . title) article
   <=>
@@ -48,10 +48,12 @@ articlePreview article =
 
 articlePreviewHeader :: Article -> Widget Name
 articlePreviewHeader article =
-  authorBox article <+> padLeft Max likeBox
+  authorBox article <+> padLeft Max likeBox &
+  padBottom (Pad 1)
 
 articlePreviewFooter :: Article -> Widget Name
 articlePreviewFooter article =
+  padTop (Pad 1) $
   str "Read more..." <+> padLeft Max (tags $ tagList article)  
   
 authorBox :: Article -> Widget Name
@@ -61,8 +63,15 @@ authorBox (Article {author = Profile {username}}) =
 likeBox :: Widget Name
 likeBox = emptyWidget
 
+feedSeparator :: Widget Name
+feedSeparator =
+  withAttr (attrName "pale") $
+  vLimit 1 (fill '_') &
+  padBottom (Pad 1)
+
 popularTags :: Widget Name
 popularTags =
+  padLeft (Pad 1) $
   B.border $
   vLimit 10 $
   C.hCenter (str "<popular tags>")
