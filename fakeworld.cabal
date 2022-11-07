@@ -65,6 +65,7 @@ executable fakeworld
         API.Request.Types
         API.Response.Types
         TUI
+        TUI.Events
         TUI.Common
         TUI.Layout.Footer
         TUI.Layout.Header

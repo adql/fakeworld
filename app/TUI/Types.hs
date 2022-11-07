@@ -4,12 +4,17 @@ module TUI.Types
   , St(..)
   ) where
 
+import Data.ByteString (ByteString)
+
+import API.Response.Types
+
 data Name = MainViewport
   deriving (Show, Eq, Ord)
 
 data St = St
   { currentPage :: Page
-  , homeArticleOffset :: Int
+  , homeArticleOffset :: ByteString
+  , homeArticles :: [Article]
   }
 
 data Page = HomePage

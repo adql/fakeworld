@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module TUI
   ( initialSt
   , tui
@@ -6,6 +7,7 @@ module TUI
 import Brick
 import Graphics.Vty.Input.Events (Event(..), Key(..))
 
+import TUI.Events
 import TUI.Pages
 import TUI.Pages.HomePage
 import TUI.Style
@@ -14,16 +16,22 @@ import TUI.Types
 initialSt :: St
 initialSt = St
   { currentPage = HomePage
-  , homeArticleOffset = 0
+  , homeArticleOffset = "0"
+  , homeArticles = []
   }
 
 tui :: App St e Name
-tui = App { appDraw = const [mainViewport homePage]
+tui = App { appDraw = \s -> [mainViewport $ homePage s]
           , appChooseCursor = neverShowCursor
           , appHandleEvent = mainViewportHandleEvent
-          , appStartEvent = return ()
+          , appStartEvent = initiateApp
           , appAttrMap = const theMap
           }
+
+initiateApp :: EventM Name St ()
+initiateApp = do
+  articles <- populateArticles
+  modify $ \s -> s { homeArticles = articles }
 
 mainViewportHandleEvent :: BrickEvent Name e -> EventM Name St ()
 mainViewportHandleEvent e0@(VtyEvent e) = case e of
