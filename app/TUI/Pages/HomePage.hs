@@ -41,9 +41,9 @@ articlePreview :: Article -> Widget Name
 articlePreview article =
   articlePreviewHeader article
   <=>
-  (txt . title) article
+  (withAttr (attrName "heading") . txt . title) article
   <=>
-  (txt . description) article
+  (withAttr (attrName "pale") . txt . description) article
   <=>
   articlePreviewFooter article
 
@@ -54,8 +54,8 @@ articlePreviewHeader article =
 
 articlePreviewFooter :: Article -> Widget Name
 articlePreviewFooter article =
-  padTop (Pad 1) $
-  str "Read more..." <+> padLeft Max (tags $ tagList article)  
+  withAttr (attrName "pale") $
+  padTop (Pad 1) (str "Read more...") <+> padLeft Max (tags $ tagList article)  
   
 authorBox :: Article -> Widget Name
 authorBox (Article {author = Profile {username}}) =
@@ -82,6 +82,5 @@ tags :: Tags -> Widget Name
 tags (Tags ts) =
   withBorderStyle unicodeRounded $
   overrideAttr (attrName "border") (attrName "pale") $
-  withAttr (attrName "pale") $
   hBox $ intersperse (str " ") $
   B.border . txt <$> ts
