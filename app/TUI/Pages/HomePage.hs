@@ -6,6 +6,7 @@ module TUI.Pages.HomePage
 
 import Brick
 import qualified Brick.Widgets.Border as B
+import Brick.Widgets.Border.Style (unicodeRounded)
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.List (intersperse)
@@ -79,5 +80,8 @@ popularTags =
 
 tags :: Tags -> Widget Name
 tags (Tags ts) =
+  withBorderStyle unicodeRounded $
+  overrideAttr (attrName "border") (attrName "pale") $
+  withAttr (attrName "pale") $
   hBox $ intersperse (str " ") $
-  txt <$> ts
+  B.border . txt <$> ts
