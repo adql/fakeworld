@@ -18,6 +18,7 @@ initialSt = St
   { currentPage = HomePage
   , homeArticleOffset = "0"
   , homeArticles = []
+  , allTags = []
   }
 
 tui :: App St e Name
@@ -31,7 +32,10 @@ tui = App { appDraw = \s -> [mainViewport $ homePage s]
 initiateApp :: EventM Name St ()
 initiateApp = do
   articles <- populateArticles
-  modify $ \s -> s { homeArticles = articles }
+  tags <- populateTags
+  modify $ \s -> s { homeArticles = articles
+                   , allTags = tags
+                   }
 
 mainViewportHandleEvent :: BrickEvent Name e -> EventM Name St ()
 mainViewportHandleEvent e0@(VtyEvent e) = case e of

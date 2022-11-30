@@ -5,6 +5,7 @@ module TUI.Types
   ) where
 
 import Data.ByteString (ByteString)
+import Data.Text (Text)
 
 import API.Response.Types
 
@@ -15,6 +16,7 @@ data St = St
   { currentPage :: Page
   , homeArticleOffset :: ByteString
   , homeArticles :: [Article]
+  , allTags :: [Text]
   }
 
 data Page = HomePage

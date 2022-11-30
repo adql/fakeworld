@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 module TUI.Pages.HomePage
@@ -7,9 +8,10 @@ module TUI.Pages.HomePage
 import Brick
 import qualified Brick.Widgets.Border as B
 import Brick.Widgets.Border.Style (unicodeRounded)
-import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.List (intersperse)
+import Data.Text (Text)
+import qualified Data.Text as T
 
 import API.Response.Types
 import TUI.Common
@@ -29,7 +31,7 @@ homePage st = navigation
 content :: St -> Widget Name
 content st =
   limitWidthAndCenter $
-  feed (homeArticles st) <+> hLimitPercent 25 popularTags
+  feed (homeArticles st) <+> hLimitPercent 25 (popularTags $ allTags st)
 
 feed :: [Article] -> Widget Name
 feed articles =
@@ -70,13 +72,16 @@ feedSeparator =
   vLimit 1 (fill '_') &
   padBottom (Pad 1)
 
-popularTags :: Widget Name
-popularTags =
+-- todo: styling (after better structuring Style.hs)
+popularTags :: [Text] -> Widget Name
+popularTags allTags =
   padLeft (Pad 1) $
-  B.border $
-  vLimit 10 $
-  C.hCenter (str "<popular tags>")
-  <=> fill ' '
+  ( str "Popular Tags" &
+    padBottom (Pad 1) )
+  <=>
+  -- Currently ugly running text since there's no trivial way to wrap
+  -- an hBox -- https://github.com/jtdaugherty/brick/issues/400
+  (txtWrap . T.concat . intersperse "  ") allTags
 
 tags :: Tags -> Widget Name
 tags (Tags ts) =
