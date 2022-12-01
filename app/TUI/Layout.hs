@@ -13,13 +13,12 @@ page :: St
      -> (St -> Widget Name)
      -> Widget Name
 page st banner content =
-  navigation
-  <=>
-  banner st
-  <=>
-  content st
-  <=>
-  footer
+  vBox [ navigation
+       , banner st &
+         padBottom (Pad 1)
+       , content st
+       , footer
+       ]
 
 navigation :: Widget Name
 navigation =
