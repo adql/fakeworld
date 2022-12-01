@@ -7,6 +7,7 @@ module TUI.Pages.HomePage
 
 import Brick
 import qualified Brick.Widgets.Border as B
+import qualified Brick.Widgets.Center as C
 import Brick.Widgets.Border.Style (unicodeRounded)
 import Data.Function ((&))
 import Data.List (intersperse)
@@ -15,17 +16,20 @@ import qualified Data.Text as T
 
 import API.Response.Types
 import TUI.Common
-import TUI.Layout
+import TUI.Layout (page)
 import TUI.Types
 
 homePage :: St -> Widget Name
-homePage st = navigation
-              <=>
-              banner
-              <=>
-              content st
-              <=>
-              footer
+homePage st = page st (const banner) content
+
+banner :: Widget Name
+banner =
+  withAttr (attrName "banner") $
+  padTopBottom 2 $
+  vBox [ C.hCenter $ str "conduit" &
+         padBottom (Pad 1)
+       , C.hCenter $ str "a place to share your knowledge"
+       ]
 
 content :: St -> Widget Name
 content st =

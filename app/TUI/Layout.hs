@@ -1,15 +1,25 @@
 module TUI.Layout
-  ( banner
-  , footer
-  , navigation
+  ( page
   ) where
 
 import Brick
-import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 
 import TUI.Common
 import TUI.Types
+
+page :: St
+     -> (St -> Widget Name)
+     -> (St -> Widget Name)
+     -> Widget Name
+page st banner content =
+  navigation
+  <=>
+  banner st
+  <=>
+  content st
+  <=>
+  footer
 
 navigation :: Widget Name
 navigation =
@@ -17,15 +27,6 @@ navigation =
   limitWidthAndCenter $
   (conduit & padRight Max) <+>
   str "Home   Sign in   Sign up"  
-
-banner :: Widget Name
-banner =
-  withAttr (attrName "banner") $
-  padTopBottom 2 $
-  vBox [ C.hCenter $ str "conduit" &
-         padBottom (Pad 1)
-       , C.hCenter $ str "a place to share your knowledge"
-       ]
 
 footer :: Widget Name
 footer =
