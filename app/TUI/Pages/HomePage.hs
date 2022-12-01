@@ -15,8 +15,7 @@ import qualified Data.Text as T
 
 import API.Response.Types
 import TUI.Common
-import TUI.Layout.Footer
-import TUI.Layout.Header
+import TUI.Layout
 import TUI.Types
 
 homePage :: St -> Widget Name

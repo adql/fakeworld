@@ -1,6 +1,7 @@
-module TUI.Layout.Header
-  ( navigation
-  , banner
+module TUI.Layout
+  ( banner
+  , footer
+  , navigation
   ) where
 
 import Brick
@@ -25,3 +26,10 @@ banner =
          padBottom (Pad 1)
        , C.hCenter $ str "a place to share your knowledge"
        ]
+
+footer :: Widget Name
+footer =
+  padTop (Pad 1) $
+  limitWidthAndCenter $
+  conduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
+  & padRight Max
