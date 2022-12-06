@@ -3,21 +3,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 module API.Response.Types
-  ( Article(..)
+  ( Article(..), Article'(..)
   , Articles(..)
-  , Comment(..)
+  , Comment(..), Comment'(..)
   , Comments(..)
-  , Profile(..)
+  , Profile(..), Profile'(..)
   , Tags(..)
-  , User(..)
+  , User(..), User'(..)
   ) where
 
 import Data.Aeson
-import qualified Data.Aeson.Key as Key
-import Data.Aeson.Types (Parser)
 import Data.Text (Text)
 import GHC.Generics
-import Data.Time.Clock (UTCTime)
+import Data.Time.Clock (UTCTime(..))
 
 data Profile = Profile
   { username  :: Text
@@ -26,8 +24,14 @@ data Profile = Profile
   , following :: Bool
   } deriving (Generic, Show)
 
-instance FromJSON Profile where
-  parseJSON = optionalUnwrapAndParse "profile"
+instance FromJSON Profile
+instance ToJSON Profile
+
+newtype Profile' = Profile' { profile :: Profile }
+  deriving (Generic, Show)
+
+instance FromJSON Profile'
+instance ToJSON Profile'
 
 data User = User
   { email    :: Text
@@ -37,20 +41,27 @@ data User = User
   , image    :: Maybe Text
   } deriving (Generic, Show)
 
-instance FromJSON User where
-  parseJSON = optionalUnwrapAndParse "user"
+instance FromJSON User
+instance ToJSON User
 
-data Tags = Tags [Text] deriving (Generic, Show)
+newtype User' = User' { user :: User }
+  deriving (Show, Generic)
 
-instance FromJSON Tags where
-  parseJSON = optionalUnwrapAndParse "tags"
+instance FromJSON User'
+instance ToJSON User'
+
+newtype Tags = Tags { tags :: [Text] }
+  deriving (Generic, Show)
+
+instance FromJSON Tags
+instance ToJSON Tags
 
 data Article = Article
   { slug :: Text
   , title :: Text
   , description :: Text
   , body :: Text
-  , tagList :: Tags
+  , tagList :: [Text]
   , createdAt :: UTCTime
   , updatedAt :: UTCTime
   , favorited :: Bool
@@ -58,14 +69,22 @@ data Article = Article
   , author :: Profile
   } deriving (Generic, Show)
 
-instance FromJSON Article where
-  parseJSON = optionalUnwrapAndParse "article"
+instance FromJSON Article
+instance ToJSON Article
 
-data Articles = Articles [Article]
+newtype Article' = Article' { article :: Article }
   deriving (Generic, Show)
 
-instance FromJSON Articles where
-  parseJSON = optionalUnwrapAndParse "articles"
+instance FromJSON Article'
+instance ToJSON Article'
+
+data Articles = Articles { articles :: [Article]
+                         , articlesCount :: Int
+                         }
+  deriving (Generic, Show)
+
+instance FromJSON Articles
+instance ToJSON Articles
 
 data Comment = Comment
   { id :: Int
@@ -75,19 +94,17 @@ data Comment = Comment
   , author :: Profile
   } deriving (Generic, Show)
 
-instance FromJSON Comment where
-  parseJSON = optionalUnwrapAndParse "comment"
+instance FromJSON Comment
+instance ToJSON Comment
 
-data Comments = Comments [Comment]
+newtype Comment' = Comment' { comment :: Comment }
   deriving (Generic, Show)
 
-instance FromJSON Comments where
-  parseJSON = optionalUnwrapAndParse "comments"
+instance FromJSON Comment'
+instance ToJSON Comment'
 
-optionalUnwrapAndParse :: (Generic a, GFromJSON Zero (Rep a)) =>
-                          Key.Key -> Value -> Parser a
-optionalUnwrapAndParse key val0 = do
-  val <- case val0 of
-           Object obj -> obj .:? key .!= Object obj
-           val' -> return val'
-  genericParseJSON defaultOptions val
+newtype Comments = Comments {comments :: [Comment] }
+  deriving (Generic, Show)
+
+instance FromJSON Comments
+instance ToJSON Comments

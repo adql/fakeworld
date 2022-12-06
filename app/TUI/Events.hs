@@ -17,13 +17,9 @@ populateArticles = do
   offset <- homeArticleOffset <$> get
   articles' <- liftIO $ requestArticleList [("limit", Just "10"),
                                            ("offset", Just $ offset)]
-  case articles' of
-    Left _ -> return []
-    Right (Articles articles) -> return articles
+  return $ either (const []) articles articles'
 
 populateTags :: EventM Name St [Text]
 populateTags = do
   tags' <- liftIO $ requestTags
-  case tags' of
-    Left _ -> return []
-    Right (Tags tags) -> return tags
+  return $ either (const []) tags tags'

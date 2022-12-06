@@ -60,7 +60,7 @@ articlePreviewHeader article =
 articlePreviewFooter :: Article -> Widget Name
 articlePreviewFooter article =
   withAttr (attrName "pale") $
-  padTop (Pad 1) (str "Read more...") <+> padLeft Max (tags $ tagList article)  
+  padTop (Pad 1) (str "Read more...") <+> padLeft Max (articleTags $ tagList article)  
   
 authorBox :: Article -> Widget Name
 authorBox (Article {author = Profile {username}}) =
@@ -86,8 +86,8 @@ popularTags allTags =
   -- an hBox -- https://github.com/jtdaugherty/brick/issues/400
   (txtWrap . T.concat . intersperse "  ") allTags
 
-tags :: Tags -> Widget Name
-tags (Tags ts) =
+articleTags :: [Text] -> Widget Name
+articleTags ts =
   withBorderStyle unicodeRounded $
   overrideAttr (attrName "border") (attrName "pale") $
   hBox $ intersperse (str " ") $
