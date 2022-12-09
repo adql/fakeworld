@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE DuplicateRecordFields #-}
 module TUI.Pages.HomePage
   ( homePage
   ) where
@@ -45,9 +44,9 @@ articlePreview :: Article -> Widget Name
 articlePreview article =
   articlePreviewHeader article
   <=>
-  (withAttr (attrName "heading") . txt . title) article
+  (withAttr (attrName "heading") . txt . articleTitle) article
   <=>
-  (withAttr (attrName "pale") . txt . description) article
+  (withAttr (attrName "pale") . txt . articleDescription) article
   <=>
   articlePreviewFooter article
 
@@ -59,11 +58,11 @@ articlePreviewHeader article =
 articlePreviewFooter :: Article -> Widget Name
 articlePreviewFooter article =
   withAttr (attrName "pale") $
-  padTop (Pad 1) (str "Read more...") <+> padLeft Max (articleTags $ tagList article)  
+  padTop (Pad 1) (str "Read more...") <+> padLeft Max (articleTags $ articleTagList article)  
   
 authorBox :: Article -> Widget Name
-authorBox (Article {author = Profile {username}}) =
-  withAttr (attrName "mainGreen") $ txt $ username
+authorBox (Article {articleAuthor = Profile {profileUsername}}) =
+  withAttr (attrName "mainGreen") $ txt $ profileUsername
 
 likeBox :: Widget Name
 likeBox = emptyWidget
