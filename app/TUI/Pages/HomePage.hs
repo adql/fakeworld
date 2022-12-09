@@ -11,7 +11,6 @@ import qualified Brick.Widgets.Center as C
 import Brick.Widgets.Border.Style (unicodeRounded)
 import Data.Function ((&))
 import Data.List (intersperse)
-import Data.Text (Text)
 import qualified Data.Text as T
 
 import API.Response.Types
@@ -76,7 +75,7 @@ feedSeparator =
   padBottom (Pad 1)
 
 -- todo: styling (after better structuring Style.hs)
-popularTags :: [Text] -> Widget Name
+popularTags :: [Tag] -> Widget Name
 popularTags allTags =
   padLeft (Pad 1) $
   ( str "Popular Tags" &
@@ -86,7 +85,7 @@ popularTags allTags =
   -- an hBox -- https://github.com/jtdaugherty/brick/issues/400
   (txtWrap . T.concat . intersperse "  ") allTags
 
-articleTags :: [Text] -> Widget Name
+articleTags :: [Tag] -> Widget Name
 articleTags ts =
   withBorderStyle unicodeRounded $
   overrideAttr (attrName "border") (attrName "pale") $

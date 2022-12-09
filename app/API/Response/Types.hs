@@ -8,6 +8,7 @@ module API.Response.Types
   , Comment(..), Comment'(..)
   , Comments(..)
   , Profile(..), Profile'(..)
+  , Tag
   , Tags(..)
   , User(..), User'(..)
   ) where
@@ -50,7 +51,9 @@ newtype User' = User' { user :: User }
 instance FromJSON User'
 instance ToJSON User'
 
-newtype Tags = Tags { tags :: [Text] }
+type Tag = Text
+
+newtype Tags = Tags { tags :: [Tag] }
   deriving (Generic, Show)
 
 instance FromJSON Tags
@@ -61,7 +64,7 @@ data Article = Article
   , title :: Text
   , description :: Text
   , body :: Text
-  , tagList :: [Text]
+  , tagList :: [Tag]
   , createdAt :: UTCTime
   , updatedAt :: UTCTime
   , favorited :: Bool
