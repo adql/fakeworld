@@ -81,12 +81,16 @@ executable fakeworld
                     aeson ^>=2.1.1.0
                   , base ^>=4.16.3.0
                   , brick ^>=1.4
-                  , bytestring >= 0.11.3.1
+                  , bytestring ^>=0.11.3.1
                   , http-conduit ^>=2.3.8
                   , http-types ^>=0.12.3
+                  , mtl ^>=2.2.2
+                  , servant-server ^>=0.19.2
                   , text ^>=2.0.1
                   , time ^>=1.12.2
                   , vty ^>=5.37
+                  , wai ^>=3.2.3
+                  , warp ^>=3.3.23
 
     -- Directories containing source files.
     hs-source-dirs:   app
