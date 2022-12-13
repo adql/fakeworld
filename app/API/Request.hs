@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module API.Request
   ( requestArticle
   , requestArticleList
@@ -6,39 +7,61 @@ module API.Request
   , requestTags
   ) where
 
+import Control.Monad.IO.Class
+import Control.Monad.Reader
 import Data.Aeson (FromJSON)
+import Data.ByteString (ByteString)
+import qualified Data.ByteString as BS
 import Network.HTTP.Simple
 
-import API.Defaults
 import API.Response.Types
+import API.Request.Types
 import qualified API.Request.Endpoints as EP
+import Env
+import qualified Env.Defaults
 
-requestProfile :: String -> IO (Either JSONException Profile)
+requestProfile :: ByteString -> ConduitRequest (ConduitResponse Profile)
 requestProfile name = do
-  request <- parseRequest $ conduitDemoAPI <> EP.profiles <> name
-  execJSONRequest request
+  let path = mkPath [EP.profiles, name]
+  r <- setRequestPath path <$> mkRequest
+  execJSONRequest r
 
-requestTags :: IO (Either JSONException Tags)
+requestTags :: ConduitRequest (ConduitResponse Tags)
 requestTags = do
-  request <- parseRequest $ conduitDemoAPI <> EP.tags
-  execJSONRequest request
+  r <- setRequestPath (mkPath [EP.tags]) <$> mkRequest
+  execJSONRequest r
 
-requestArticleList :: Query -> IO (Either JSONException Articles)
+requestArticleList :: Query -> ConduitRequest (ConduitResponse Articles)
 requestArticleList query = do
-  request <- setRequestQueryString query <$>
-             ( parseRequest $ conduitDemoAPI <> EP.articles )
-  execJSONRequest request
+  r <-  setRequestPath (mkPath [EP.articles])
+    <$> setRequestQueryString query
+    <$> mkRequest
+  execJSONRequest r
 
-requestArticle :: String -> IO (Either JSONException Article)
-requestArticle slug' = do
-  request <- parseRequest $ conduitDemoAPI <> EP.articles <> "/" <> slug'
-  execJSONRequest request
+requestArticle :: ByteString -> ConduitRequest (ConduitResponse Article)
+requestArticle slug = do
+  let path = mkPath [EP.articles, slug]
+  r <- setRequestPath path <$> mkRequest
+  execJSONRequest r
 
-requestComments :: String -> IO (Either JSONException Comments)
-requestComments slug' = do
-  request <- parseRequest $ conduitDemoAPI <> EP.articles <> "/" <> slug' <> "/comments"
-  execJSONRequest request
+requestComments :: ByteString -> ConduitRequest (ConduitResponse Comments)
+requestComments slug = do
+  let path = mkPath [EP.articles, slug, "comments"]
+  r <- setRequestPath path <$> mkRequest
+  execJSONRequest r
+  
+mkRequest :: ConduitRequest Request
+mkRequest = ask >>= \env ->
+  let r = setRequestHost (requestHost env)
+        $ setRequestPort (requestPort env)
+        $ setRequestSecure (requestSecure env)
+        $ defaultRequest
+  in
+    return r
 
-execJSONRequest :: FromJSON a => Request -> IO (Either JSONException a)
-execJSONRequest request =
-  httpJSONEither request >>= return . getResponseBody
+mkPath :: [ByteString] -> ByteString
+mkPath path = BS.intercalate "/" $ Env.Defaults.aPIBasePath : path
+
+execJSONRequest :: FromJSON a => Request -> ConduitRequest (ConduitResponse a)
+execJSONRequest r = liftIO $ 
+  httpJSONEither r >>= return . getResponseBody

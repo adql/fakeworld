@@ -8,6 +8,7 @@ import Data.ByteString (ByteString)
 import Data.Text (Text)
 
 import API.Response.Types
+import Env
 
 data Name = MainViewport
   deriving (Show, Eq, Ord)
@@ -17,6 +18,7 @@ data St = St
   , homeArticleOffset :: ByteString
   , homeArticles :: [Article]
   , allTags :: [Text]
+  , env :: Env
   }
 
 data Page = HomePage

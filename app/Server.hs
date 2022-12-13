@@ -1,6 +1,8 @@
 {-# LANGUAGE RecordWildCards #-}
 
-module Server where
+module Server
+  ( app
+  ) where
 
 import Data.Text (Text)
 import Network.Wai

@@ -7,18 +7,20 @@ module TUI
 import Brick
 import Graphics.Vty.Input.Events (Event(..), Key(..))
 
+import Env
 import TUI.Events
 import TUI.Pages
 import TUI.Pages.HomePage
 import TUI.Style
 import TUI.Types
 
-initialSt :: St
-initialSt = St
+initialSt :: Env -> St
+initialSt env' = St
   { currentPage = HomePage
   , homeArticleOffset = "0"
   , homeArticles = []
   , allTags = []
+  , env = env'
   }
 
 tui :: App St e Name

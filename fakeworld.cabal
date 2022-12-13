@@ -59,11 +59,14 @@ executable fakeworld
 
     -- Modules included in this executable, other than Main.
     other-modules:
-        API.Defaults
         API.Request
         API.Request.Endpoints
         API.Request.Types
         API.Response.Types
+        Env
+        Env.Defaults
+        Server
+        Server.DummyDB
         TUI
         TUI.Events
         TUI.Common
@@ -79,6 +82,7 @@ executable fakeworld
     -- Other library packages from which modules are imported.
     build-depends:
                     aeson ^>=2.1.1.0
+                  , async ^>=2.2.4
                   , base ^>=4.16.3.0
                   , brick ^>=1.4
                   , bytestring ^>=0.11.3.1
