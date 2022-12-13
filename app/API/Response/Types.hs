@@ -37,7 +37,9 @@ newtype Profile' = Profile' { profile :: Profile }
   deriving (Generic, Show)
 
 instance FromJSON Profile'
-instance ToJSON Profile'
+
+instance ToJSON Profile' where
+  toEncoding (Profile' inner) = pairs ("profile" .= inner)
 
 data User = User
   { userEmail    :: Text
@@ -57,7 +59,9 @@ newtype User' = User' { user :: User }
   deriving (Show, Generic)
 
 instance FromJSON User'
-instance ToJSON User'
+
+instance ToJSON User' where
+  toEncoding (User' inner) = pairs ("user" .= inner)
 
 type Tag = Text
 
@@ -90,7 +94,9 @@ newtype Article' = Article' { article :: Article }
   deriving (Generic, Show)
 
 instance FromJSON Article'
-instance ToJSON Article'
+
+instance ToJSON Article' where
+  toEncoding (Article' inner) = pairs ("article" .= inner)
 
 data Articles = Articles { articles :: [Article]
                          , articlesCount :: Int
@@ -98,7 +104,10 @@ data Articles = Articles { articles :: [Article]
   deriving (Generic, Show)
 
 instance FromJSON Articles
-instance ToJSON Articles
+
+instance ToJSON Articles where
+  toEncoding (Articles inner count) =
+    pairs ("articles" .= inner <> "articlesCount" .= count)
 
 data Comment = Comment
   { commentId :: Int
@@ -118,17 +127,20 @@ newtype Comment' = Comment' { comment :: Comment }
   deriving (Generic, Show)
 
 instance FromJSON Comment'
-instance ToJSON Comment'
+
+instance ToJSON Comment' where
+  toEncoding (Comment' inner) = pairs ("comment" .= inner)
 
 newtype Comments = Comments {comments :: [Comment] }
   deriving (Generic, Show)
 
 instance FromJSON Comments
-instance ToJSON Comments
+
+instance ToJSON Comments where
+  toEncoding (Comments inner) = pairs ("comments" .= inner)
 
 withPrefixRemoval :: Int -> Options
 withPrefixRemoval len = defaultOptions { fieldLabelModifier = unPrefix }
   where
     unPrefix =
       maybe "" (\(c,cs) -> toLower c : cs) . uncons . drop len
-    
