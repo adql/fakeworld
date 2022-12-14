@@ -14,6 +14,9 @@ import Server.DummyDB
 
 server :: Server API
 server = serveArticles
+    :<|> serveArticle
+    :<|> serveComments
+    :<|> serveProfile
     :<|> serveTags
 
 serveArticles :: Maybe Tag
@@ -24,6 +27,15 @@ serveArticles :: Maybe Tag
               -> Handler Articles
 serveArticles quTagged quByAuthor quFavoritedBy quLimit quOffset =
   dbQueryArticles $ QueryArticles {..}
+
+serveArticle :: Text -> Handler Article'
+serveArticle = dbQueryArticle
+
+serveComments :: Text -> Handler Comments
+serveComments = dbQueryComments
+
+serveProfile :: Text -> Handler Profile'
+serveProfile = dbQueryProfile
 
 serveTags :: Handler Tags
 serveTags = return dummyTags

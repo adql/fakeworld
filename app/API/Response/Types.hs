@@ -25,7 +25,7 @@ data Profile = Profile
   , profileBio       :: Maybe Text
   , profileImage     :: Maybe Text
   , profileFollowing :: Bool
-  } deriving (Generic, Show)
+  } deriving (Eq, Generic, Show)
 
 instance FromJSON Profile where
   parseJSON = genericParseJSON $ withPrefixRemoval 7
@@ -34,7 +34,7 @@ instance ToJSON Profile where
   toEncoding = genericToEncoding $ withPrefixRemoval 7
 
 newtype Profile' = Profile' { profile :: Profile }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON Profile'
 
@@ -47,7 +47,7 @@ data User = User
   , userUsername :: Text
   , userBio      :: Maybe Text
   , userImage    :: Maybe Text
-  } deriving (Generic, Show)
+  } deriving (Eq, Generic, Show)
 
 instance FromJSON User where
   parseJSON = genericParseJSON $ withPrefixRemoval 4
@@ -56,7 +56,7 @@ instance ToJSON User where
   toEncoding = genericToEncoding $ withPrefixRemoval 4
 
 newtype User' = User' { user :: User }
-  deriving (Show, Generic)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON User'
 
@@ -66,7 +66,7 @@ instance ToJSON User' where
 type Tag = Text
 
 newtype Tags = Tags { tags :: [Tag] }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON Tags
 instance ToJSON Tags
@@ -82,7 +82,7 @@ data Article = Article
   , articleFavorited :: Bool
   , articleFavoritesCount :: Int
   , articleAuthor :: Profile
-  } deriving (Generic, Show)
+  } deriving (Eq, Generic, Show)
 
 instance FromJSON Article where
   parseJSON = genericParseJSON $ withPrefixRemoval 7
@@ -91,7 +91,7 @@ instance ToJSON Article where
   toEncoding = genericToEncoding $ withPrefixRemoval 7
 
 newtype Article' = Article' { article :: Article }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON Article'
 
@@ -101,7 +101,7 @@ instance ToJSON Article' where
 data Articles = Articles { articles :: [Article]
                          , articlesCount :: Int
                          }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON Articles
 
@@ -115,7 +115,7 @@ data Comment = Comment
   , commentUpdatedAt :: UTCTime
   , commentBody :: Text
   , commentAuthor :: Profile
-  } deriving (Generic, Show)
+  } deriving (Eq, Generic, Show)
 
 instance FromJSON Comment where
   parseJSON = genericParseJSON $ withPrefixRemoval 7
@@ -124,7 +124,7 @@ instance ToJSON Comment where
   toEncoding = genericToEncoding $ withPrefixRemoval 7
 
 newtype Comment' = Comment' { comment :: Comment }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON Comment'
 
@@ -132,7 +132,7 @@ instance ToJSON Comment' where
   toEncoding (Comment' inner) = pairs ("comment" .= inner)
 
 newtype Comments = Comments {comments :: [Comment] }
-  deriving (Generic, Show)
+  deriving (Eq, Generic, Show)
 
 instance FromJSON Comments
 

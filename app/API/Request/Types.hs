@@ -32,6 +32,9 @@ runConduitRequest :: Env -> ConduitRequest (ConduitResponse a)
 runConduitRequest = flip runReaderT
 
 type API = ListArticles
+      :<|> GetArticle
+      :<|> GetComments
+      :<|> GetProfile
       :<|> GetTags
 
 type APIBase = "api"
@@ -44,6 +47,22 @@ type ListArticles = APIBase
                  :> QueryParam "limit" Int
                  :> QueryParam "offset" Int
                  :> Get '[JSON] Articles
+
+type GetArticle = APIBase
+               :> "articles"
+               :> Capture "slug" Text
+               :> Get '[JSON] Article'
+
+type GetComments = APIBase
+                :> "articles"
+                :> Capture "slug" Text
+                :> "comments"
+                :> Get '[JSON] Comments
+
+type GetProfile = APIBase
+               :> "profiles"
+               :> Capture "username" Text
+               :> Get '[JSON] Profile'
 
 type GetTags = APIBase
             :> "tags"

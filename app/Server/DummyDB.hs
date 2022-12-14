@@ -4,14 +4,21 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Server.DummyDB
-  ( dbQueryArticles
+  ( dbQueryArticle
+  , dbQueryArticles
+  , dbQueryComments
+  , dbQueryProfile
   , dummyTags
   , QueryArticles(..)
   ) where
 
 -- Dummy database and access functions for development purposes
 
+import Control.Monad.Except (catchError)
+import qualified Data.ByteString.Lazy as BSL
 import Data.Function ((&))
+import Data.List (find)
+import Data.Maybe (fromJust)
 import Data.Text (Text)
 import Data.Time.Clock (UTCTime(..), secondsToDiffTime)
 import Data.Time.Calendar.OrdinalDate (fromOrdinalDate)
@@ -39,6 +46,28 @@ dbQueryArticles (QueryArticles {..}) = return $
     q4 = applyQParam quOffset $ \p -> drop p
     q5 = applyQParam quLimit $ \p -> take p
 
+dbQueryArticle :: Text -> Handler Article'
+dbQueryArticle slug = 
+  let art = find ((== slug) . articleSlug) (articles dummyArticles) in
+    maybe (throwError $ notFoundError "article") (return . Article') art
+
+dbQueryComments :: Text -> Handler Comments
+dbQueryComments slug =
+  (Comments . fromJust . flip lookup dummyCommentTable . article) <$>
+  dbQueryArticle slug
+
+dbQueryProfile :: Text -> Handler Profile'
+dbQueryProfile username =
+  let pr = find ((== username) . profileUsername) dummyProfiles in
+    maybe (throwError $ notFoundError "profile") (return . Profile') pr
+
+notFoundError :: BSL.ByteString -> ServerError
+notFoundError q = jsonError $
+                  err404 { errBody = "{\"errors\":{\"" <> q <> "\":[\"not found\"]}}" }
+
+jsonError :: ServerError -> ServerError
+jsonError e = e { errHeaders = ("Content-Type", "application/json;charset=utf-8") : errHeaders e }
+
 applyQFilter :: Maybe a
              -> (a -> b -> Bool)
              -> [b] -> [b]
@@ -62,6 +91,9 @@ dummyProfile2 = Profile "Dummy Profile 2"
                (Just "Some other random dummy profile")
                Nothing
                True
+
+dummyProfiles :: [Profile]
+dummyProfiles = [dummyProfile1, dummyProfile2]
 
 dummyUser :: User
 dummyUser = User
@@ -103,13 +135,26 @@ dummyArticle2 = Article
 dummyArticles :: Articles
 dummyArticles = Articles [dummyArticle1, dummyArticle2] 2
 
-dummyComment :: Comment
-dummyComment = Comment
+dummyComment1 :: Comment
+dummyComment1 = Comment
                1
                dummyTime
                dummyTime
                "Spam comment"
                dummyProfile1
+
+dummyComment2 :: Comment
+dummyComment2 = Comment
+               2
+               dummyTime
+               dummyTime
+               "Another spam comment"
+               dummyProfile2
+
+dummyCommentTable :: [(Article, [Comment])]
+dummyCommentTable = [ (dummyArticle1, [dummyComment1])
+                    , (dummyArticle2, [dummyComment2])
+                    ]
 
 dummyTime :: UTCTime
 dummyTime = UTCTime
