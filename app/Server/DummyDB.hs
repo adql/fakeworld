@@ -49,7 +49,7 @@ applyQParam :: Maybe a
             -> (a -> b -> b)
             -> b -> b
 applyQParam param applyF =
-  maybe (\x -> x) applyF param
+  maybe id applyF param
 
 dummyProfile1 :: Profile
 dummyProfile1 = Profile "Dummy Profile 1"
