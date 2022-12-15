@@ -4,5 +4,7 @@ module TUI.Common
 
 import Brick
 
+import TUI.Style
+
 conduit :: Widget n
-conduit = withAttr (attrName "conduit") (str "conduit")
+conduit = withAttr conduitAttr (str "conduit")

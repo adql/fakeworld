@@ -14,6 +14,7 @@ import qualified Data.Text as T
 
 import API.Response.Types
 import TUI.Layout
+import TUI.Style
 import TUI.Types
 
 homePage :: St -> Widget Name
@@ -21,7 +22,7 @@ homePage st = page st (const banner) content
 
 banner :: Widget Name
 banner =
-  withAttr (attrName "banner") $
+  withAttr homepageBannerAttr $
   padTopBottom 2 $
   vBox [ C.hCenter $ str "conduit" &
          padBottom (Pad 1)
@@ -43,7 +44,7 @@ articlePreview :: Article -> Widget Name
 articlePreview article =
   articlePreviewHeader article
   <=>
-  (withAttr (attrName "heading") . txt . articleTitle) article
+  (withAttr previewHeadingAttr . txt . articleTitle) article
   <=>
   (withAttr (attrName "pale") . txt . articleDescription) article
   <=>
@@ -61,7 +62,7 @@ articlePreviewFooter article =
   
 authorBox :: Article -> Widget Name
 authorBox (Article {articleAuthor = Profile {profileUsername}}) =
-  withAttr (attrName "mainGreen") $ txt $ profileUsername
+  withAttr (attrName "conduitGreen") $ txt $ profileUsername
 
 likeBox :: Widget Name
 likeBox = emptyWidget
