@@ -13,8 +13,7 @@ import Data.List (intersperse)
 import qualified Data.Text as T
 
 import API.Response.Types
-import TUI.Common
-import TUI.Layout (page)
+import TUI.Layout
 import TUI.Types
 
 homePage :: St -> Widget Name

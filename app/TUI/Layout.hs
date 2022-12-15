@@ -1,8 +1,10 @@
 module TUI.Layout
   ( page
+  , limitWidthAndCenter
   ) where
 
 import Brick
+import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 
 import TUI.Common
@@ -33,3 +35,6 @@ footer =
   limitWidthAndCenter $
   conduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
   & padRight Max
+
+limitWidthAndCenter :: Widget n -> Widget n
+limitWidthAndCenter = C.hCenter . hLimit 120
