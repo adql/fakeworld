@@ -32,12 +32,7 @@ tui = App { appDraw = \s -> [mainViewport $ homePage s]
           }
 
 initiateApp :: EventM Name St ()
-initiateApp = do
-  articles <- populateArticles
-  tags <- populateTags
-  modify $ \s -> s { homeArticles = articles
-                   , allTags = tags
-                   }
+initiateApp = openHome
 
 mainViewportHandleEvent :: BrickEvent Name e -> EventM Name St ()
 mainViewportHandleEvent e0@(VtyEvent e) = case e of
