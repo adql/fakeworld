@@ -10,7 +10,6 @@ import Graphics.Vty.Input.Events (Event(..), Key(..))
 import Env
 import TUI.Events
 import TUI.Pages
-import TUI.Pages.HomePage
 import TUI.Style
 import TUI.Types
 
@@ -24,7 +23,7 @@ initialSt env' = St
   }
 
 tui :: App St e Name
-tui = App { appDraw = \s -> [mainViewport $ homePage s]
+tui = App { appDraw = \s -> [mainViewport $ serveMainWidget s]
           , appChooseCursor = neverShowCursor
           , appHandleEvent = mainViewportHandleEvent
           , appStartEvent = initiateApp
