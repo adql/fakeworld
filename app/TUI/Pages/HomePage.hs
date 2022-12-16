@@ -13,6 +13,8 @@ import Data.List (intersperse)
 import qualified Data.Text as T
 
 import API.Response.Types
+
+import TUI.Common
 import TUI.Layout
 import TUI.Style
 import TUI.Types
@@ -52,18 +54,18 @@ articlePreview article =
 
 articlePreviewHeader :: Article -> Widget Name
 articlePreviewHeader article =
-  authorBox article <+> padLeft Max likeBox &
-  padBottom (Pad 1)
+  let username = profileUsername $ articleAuthor article
+      createdAt = articleCreatedAt article
+  in
+    authorBox username createdAt
+    <+> padLeft Max likeBox &
+    padBottom (Pad 1)
 
 articlePreviewFooter :: Article -> Widget Name
 articlePreviewFooter article =
   withAttr (attrName "pale") $
   padTop (Pad 1) (str "Read more...") <+> padLeft Max (articleTags $ articleTagList article)  
   
-authorBox :: Article -> Widget Name
-authorBox (Article {articleAuthor = Profile {profileUsername}}) =
-  withAttr (attrName "conduitGreen") $ txt $ profileUsername
-
 likeBox :: Widget Name
 likeBox = emptyWidget
 
