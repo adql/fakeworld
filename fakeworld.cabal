@@ -89,6 +89,7 @@ executable fakeworld
                   , http-conduit ^>=2.3.8
                   , http-types ^>=0.12.3
                   , mtl ^>=2.2.2
+                  , optparse-applicative ^>= 0.17.0.0
                   , servant-server ^>=0.19.2
                   , text ^>=2.0.1
                   , time ^>=1.12.2
