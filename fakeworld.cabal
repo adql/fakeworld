@@ -84,7 +84,7 @@ executable fakeworld
                     aeson ^>=2.1.1.0
                   , async ^>=2.2.4
                   , base ^>=4.16.3.0
-                  , brick ^>=1.4
+                  , brick ^>=1.5
                   , bytestring ^>=0.11.3.1
                   , http-conduit ^>=2.3.8
                   , http-types ^>=0.12.3
