@@ -20,7 +20,7 @@ import qualified API.Request.Endpoints as EP
 import Env
 import qualified Env.Defaults
 
-requestProfile :: ByteString -> ConduitRequest (ConduitResponse Profile)
+requestProfile :: ByteString -> ConduitRequest (ConduitResponse Profile')
 requestProfile name = do
   let path = mkPath [EP.profiles, name]
   r <- setRequestPath path <$> mkRequest
@@ -38,7 +38,7 @@ requestArticleList query = do
     <$> mkRequest
   execJSONRequest r
 
-requestArticle :: ByteString -> ConduitRequest (ConduitResponse Article)
+requestArticle :: ByteString -> ConduitRequest (ConduitResponse Article')
 requestArticle slug = do
   let path = mkPath [EP.articles, slug]
   r <- setRequestPath path <$> mkRequest
