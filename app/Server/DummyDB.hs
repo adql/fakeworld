@@ -108,7 +108,7 @@ dummyTags = Tags ["dummy-1", "dummy-2"]
 
 dummyArticle1 :: Article
 dummyArticle1 = Article
-                "Some dummy article"
+                "How-to-do-dummy-stuff"
                 "How to do dummy stuff"
                 "Useless dummy information"
                 "Lorem ipsum dummy ipsum dummy"
@@ -121,8 +121,8 @@ dummyArticle1 = Article
 
 dummyArticle2 :: Article
 dummyArticle2 = Article
-                "Another dummy article"
-                "How to do dummy stuff"
+                "How-to-do-more-dummy-stuff"
+                "How to do more dummy stuff"
                 "Useless dummy information"
                 "Lorem ipsum dummy ipsum dummy"
                 [ tags dummyTags !! 1 ]
