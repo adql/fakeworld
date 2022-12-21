@@ -10,7 +10,7 @@ import Brick
 import Graphics.Vty.Attributes
 
 theMap :: AttrMap
-theMap = attrMap defAttr
+theMap = attrMap (black `on` brightWhite)
          [ -- general attributes
            (attrName "conduitGreen", fg conduitGreen)
          , (attrName "pale", withStyle (fg brightBlack) dim)
