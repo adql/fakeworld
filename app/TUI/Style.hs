@@ -7,18 +7,18 @@ module TUI.Style
   ) where
 
 import Brick
-import qualified Graphics.Vty.Attributes as VA
+import Graphics.Vty.Attributes
 
 theMap :: AttrMap
-theMap = attrMap VA.defAttr
+theMap = attrMap defAttr
          [ -- general attributes
            (attrName "conduitGreen", fg conduitGreen)
-         , (attrName "pale", VA.withStyle (fg VA.brightBlack) VA.dim)
+         , (attrName "pale", withStyle (fg brightBlack) dim)
 
            -- element attributes
-         , (conduitAttr, style VA.bold)
-         , (homepageBannerAttr, VA.brightWhite `on` conduitGreen)
-         , (previewHeadingAttr, style VA.bold)
+         , (conduitAttr, style bold)
+         , (homepageBannerAttr, brightWhite `on` conduitGreen)
+         , (previewHeadingAttr, style bold)
          ]
 
 conduitAttr,
@@ -29,8 +29,8 @@ conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
 homepageBannerAttr = attrName "homepageBanner"
 previewHeadingAttr = attrName "previewHeading"
 
-style :: VA.Style -> VA.Attr
-style = VA.withStyle VA.defAttr
+style :: Style -> Attr
+style = withStyle defAttr
 
-conduitGreen :: VA.Color
-conduitGreen = VA.RGBColor 92 184 92
+conduitGreen :: Color
+conduitGreen = RGBColor 92 184 92
