@@ -48,7 +48,7 @@ articlePreview article =
   <=>
   (withAttr previewHeadingAttr . txt . articleTitle) article
   <=>
-  (withAttr (attrName "pale") . txt . articleDescription) article
+  (withAttr previewDescAttr . txt . articleDescription) article
   <=>
   articlePreviewFooter article
 
@@ -63,7 +63,7 @@ articlePreviewHeader article =
 
 articlePreviewFooter :: Article -> Widget Name
 articlePreviewFooter article =
-  withAttr (attrName "pale") $
+  withAttr previewFooterAttr $
   padTop (Pad 1) (str "Read more...") <+> padLeft Max (articleTags $ articleTagList article)  
   
 likeBox :: Widget Name
@@ -71,7 +71,7 @@ likeBox = emptyWidget
 
 feedSeparator :: Widget Name
 feedSeparator =
-  withAttr (attrName "pale") $
+  withAttr feedSepAttr $
   vLimit 1 (fill '_') &
   padBottom (Pad 1)
 
@@ -89,6 +89,6 @@ popularTags allTags =
 articleTags :: [Tag] -> Widget Name
 articleTags ts =
   withBorderStyle unicodeRounded $
-  overrideAttr (attrName "border") (attrName "pale") $
+  overrideAttr (attrName "border") previewFooterAttr $
   hBox $ intersperse (str " ") $
   B.border . txt <$> ts

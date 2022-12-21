@@ -16,8 +16,8 @@ conduit = withAttr conduitAttr (str "conduit")
 
 authorBox :: Text -> UTCTime -> Widget Name
 authorBox username time =
-  ( withAttr (attrName "conduitGreen") $ txt $ username )
+  ( withAttr authorBoxNameAttr $ txt $ username )
   <=>
-  ( (withAttr (attrName "pale")) $ str $ formatTime defaultTimeLocale timeFormat time )
+  ( withAttr authorBoxTimeAttr $ str $ formatTime defaultTimeLocale timeFormat time )
   where
     timeFormat = "%B %-d, %Y"

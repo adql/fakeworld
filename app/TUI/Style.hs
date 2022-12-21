@@ -1,8 +1,13 @@
 module TUI.Style
   ( theMap
 
+  , authorBoxNameAttr
+  , authorBoxTimeAttr
   , conduitAttr
+  , feedSepAttr
   , homepageBannerAttr
+  , previewDescAttr
+  , previewFooterAttr
   , previewHeadingAttr
   ) where
 
@@ -21,12 +26,22 @@ theMap = attrMap (black `on` brightWhite)
          , (previewHeadingAttr, style bold)
          ]
 
-conduitAttr,
+authorBoxNameAttr,
+  authorBoxTimeAttr,
+  conduitAttr,
+  feedSepAttr,
   homepageBannerAttr,
+  previewDescAttr,
+  previewFooterAttr,
   previewHeadingAttr
   :: AttrName
+authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
+authorBoxTimeAttr = attrName "pale" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
+feedSepAttr = attrName "pale" <> attrName "feedSep"
 homepageBannerAttr = attrName "homepageBanner"
+previewDescAttr = attrName "pale" <> attrName "previewDesc"
+previewFooterAttr = attrName "pale" <> attrName "previewFooter"
 previewHeadingAttr = attrName "previewHeading"
 
 style :: Style -> Attr
