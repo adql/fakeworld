@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module TUI.Style
   ( theMap
 
@@ -12,13 +13,15 @@ module TUI.Style
   ) where
 
 import Brick
+import Data.Word (Word8)
 import Graphics.Vty.Attributes
 
 theMap :: AttrMap
 theMap = attrMap (black `on` brightWhite)
          [ -- general attributes
            (attrName "conduitGreen", fg conduitGreen)
-         , (attrName "pale", withStyle (fg brightBlack) dim)
+         , (attrName "pale9" , pale 9 )
+         , (attrName "pale11", pale 11)
 
            -- element attributes
          , (conduitAttr, style bold)
@@ -36,12 +39,12 @@ authorBoxNameAttr,
   previewHeadingAttr
   :: AttrName
 authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
-authorBoxTimeAttr = attrName "pale" <> attrName "authorBoxTime"
+authorBoxTimeAttr = attrName "pale11" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
-feedSepAttr = attrName "pale" <> attrName "feedSep"
+feedSepAttr = attrName "pale11" <> attrName "feedSep"
 homepageBannerAttr = attrName "homepageBanner"
-previewDescAttr = attrName "pale" <> attrName "previewDesc"
-previewFooterAttr = attrName "pale" <> attrName "previewFooter"
+previewDescAttr = attrName "pale9" <> attrName "previewDesc"
+previewFooterAttr = attrName "pale11" <> attrName "previewFooter"
 previewHeadingAttr = attrName "previewHeading"
 
 style :: Style -> Attr
@@ -49,3 +52,8 @@ style = withStyle defAttr
 
 conduitGreen :: Color
 conduitGreen = RGBColor 92 184 92
+
+pale :: Word8 -> Attr
+pale c = fg $ RGBColor c' c' c'
+  where
+    c' = c * 17
