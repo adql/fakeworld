@@ -17,6 +17,7 @@ data St = St
   { currentPage :: Page
   , homeArticleOffset :: ByteString
   , homeArticles :: [Article]
+  , articleCurrent :: Maybe Article
   , allTags :: [Text]
   , env :: Env
   }

@@ -18,6 +18,7 @@ initialSt env' = St
   { currentPage = HomePage
   , homeArticleOffset = "0"
   , homeArticles = []
+  , articleCurrent = Nothing
   , allTags = []
   , env = env'
   }

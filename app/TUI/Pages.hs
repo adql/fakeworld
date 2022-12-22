@@ -5,6 +5,7 @@ module TUI.Pages
 
 import Brick
 
+import TUI.Pages.Article
 import TUI.Pages.HomePage
 import TUI.Types
 
@@ -13,5 +14,6 @@ mainViewport = viewport MainViewport Vertical
 
 serveMainWidget :: St -> Widget Name
 serveMainWidget st  = case currentPage st of
-  HomePage -> homePage st
-  _        -> undefined
+  HomePage    -> homePage st
+  ArticlePage -> articlePage st
+  _           -> undefined

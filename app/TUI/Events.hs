@@ -1,10 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module TUI.Events
-  ( openHome
+  ( openArticle
+  , openHome
   ) where
 
 import Brick
 import Control.Monad.IO.Class (liftIO)
+import Data.ByteString (ByteString)
 import Data.Text (Text)
 
 import API.Request
@@ -21,6 +23,13 @@ openHome = do
                    , allTags = tgs
                    }
 
+openArticle :: ByteString -> EventM Name St ()
+openArticle slug = do
+  artcl <- updateArticle slug
+  modify $ \s -> s { currentPage = ArticlePage
+                   , articleCurrent = artcl
+                   }
+
 -- EventM actions to update state record fields
 
 updateHomeArticles :: EventM Name St [Article]
@@ -35,6 +44,11 @@ updateAllTags :: EventM Name St [Text]
 updateAllTags = do
   tags' <- request requestTags
   return $ either (const []) tags tags'
+
+updateArticle :: ByteString -> EventM Name St (Maybe Article)
+updateArticle slug = do
+  artcl <- request $ requestArticle slug
+  return $ either (const Nothing) (Just . article) artcl
 
 request :: ConduitRequest (ConduitResponse a)
         -> EventM Name St (ConduitResponse a)

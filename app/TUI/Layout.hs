@@ -2,6 +2,7 @@ module TUI.Layout
   ( page
   , limitWidthAndCenter
   , bodyWidth
+  , commentSectionWidth
   ) where
 
 import Brick
@@ -40,5 +41,8 @@ footer =
 limitWidthAndCenter :: Int -> Widget n -> Widget n
 limitWidthAndCenter w = C.hCenter . hLimit w
 
-bodyWidth :: Int
+bodyWidth,
+  commentSectionWidth
+  :: Int
 bodyWidth = 120
+commentSectionWidth = bodyWidth * 2 `div` 3

@@ -2,6 +2,8 @@
 module TUI.Style
   ( theMap
 
+  , articlePageBannerAttr
+  , articlePageBannerAuthorNameAttr
   , articleTagsAttr
   , articleTagsBorderAttr
   , authorBoxNameAttr
@@ -28,12 +30,16 @@ theMap = attrMap (black `on` brightWhite)
          , (attrName "pale13", pale 13)
 
            -- element attributes
+         , (articlePageBannerAttr, brightWhite `on` (RGBColor 51 51 51))
+         , (articlePageBannerAuthorNameAttr, fg brightWhite)
          , (conduitAttr, style bold)
          , (homepageBannerAttr, brightWhite `on` conduitGreen)
          , (previewHeadingAttr, style bold)
          ]
 
-articleTagsAttr,
+articlePageBannerAttr,
+  articlePageBannerAuthorNameAttr,
+  articleTagsAttr,
   articleTagsBorderAttr,
   authorBoxNameAttr,
   authorBoxTimeAttr,
@@ -44,6 +50,8 @@ articleTagsAttr,
   previewHeadingAttr,
   separatorAttr
   :: AttrName
+articlePageBannerAttr = attrName "articleBanner"
+articlePageBannerAuthorNameAttr = attrName "articlePageBannerAuthorName"
 articleTagsAttr = attrName "pale10" <> attrName "articleTags"
 articleTagsBorderAttr = attrName "pale13" <> attrName "articleTagsBorder"
 authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
