@@ -7,11 +7,11 @@ module TUI.Style
   , authorBoxNameAttr
   , authorBoxTimeAttr
   , conduitAttr
-  , feedSepAttr
   , homepageBannerAttr
   , previewDescAttr
   , previewFooterAttr
   , previewHeadingAttr
+  , separatorAttr
   ) where
 
 import Brick
@@ -38,22 +38,22 @@ articleTagsAttr,
   authorBoxNameAttr,
   authorBoxTimeAttr,
   conduitAttr,
-  feedSepAttr,
   homepageBannerAttr,
   previewDescAttr,
   previewFooterAttr,
-  previewHeadingAttr
+  previewHeadingAttr,
+  separatorAttr
   :: AttrName
 articleTagsAttr = attrName "pale10" <> attrName "articleTags"
 articleTagsBorderAttr = attrName "pale13" <> attrName "articleTagsBorder"
 authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
 authorBoxTimeAttr = attrName "pale11" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
-feedSepAttr = attrName "pale11" <> attrName "feedSep"
 homepageBannerAttr = attrName "homepageBanner"
 previewDescAttr = attrName "pale9" <> attrName "previewDesc"
 previewFooterAttr = attrName "pale11" <> attrName "previewFooter"
 previewHeadingAttr = attrName "previewHeading"
+separatorAttr = attrName "pale13" <> attrName "feedSep"
 
 style :: Style -> Attr
 style = withStyle defAttr

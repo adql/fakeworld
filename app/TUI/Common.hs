@@ -2,11 +2,13 @@ module TUI.Common
   ( conduit
   , articleTags
   , authorBox
+  , separator
   ) where
 
 import Brick
 import qualified Brick.Widgets.Border as B
 import Brick.Widgets.Border.Style (unicodeRounded)
+import Data.Function ((&))
 import Data.List (intersperse)
 import Data.Text (Text)
 import Data.Time.Clock (UTCTime)
@@ -33,3 +35,9 @@ articleTags ts =
   overrideAttr (attrName "border") articleTagsBorderAttr $
   hBox $ intersperse (str " ") $
   B.border . withAttr articleTagsAttr . txt <$> ts
+
+separator :: Widget Name
+separator =
+  withAttr separatorAttr $
+  vLimit 1 (fill '_') &
+  padBottom (Pad 1)

@@ -37,7 +37,7 @@ content st =
 feed :: [Article] -> Widget Name
 feed articles =
   padRight (Pad 1) $
-  vBox $ intersperse feedSeparator $
+  vBox $ intersperse separator $
   articlePreview <$> articles
   
 articlePreview :: Article -> Widget Name
@@ -66,12 +66,6 @@ articlePreviewFooter article =
   
 likeBox :: Widget Name
 likeBox = emptyWidget
-
-feedSeparator :: Widget Name
-feedSeparator =
-  withAttr feedSepAttr $
-  vLimit 1 (fill '_') &
-  padBottom (Pad 1)
 
 -- todo: styling (after better structuring Style.hs)
 popularTags :: [Tag] -> Widget Name
