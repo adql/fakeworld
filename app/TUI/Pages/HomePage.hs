@@ -5,9 +5,7 @@ module TUI.Pages.HomePage
   ) where
 
 import Brick
-import qualified Brick.Widgets.Border as B
 import qualified Brick.Widgets.Center as C
-import Brick.Widgets.Border.Style (unicodeRounded)
 import Data.Function ((&))
 import Data.List (intersperse)
 import qualified Data.Text as T
@@ -85,10 +83,3 @@ popularTags allTags =
   -- Currently ugly running text since there's no trivial way to wrap
   -- an hBox -- https://github.com/jtdaugherty/brick/issues/400
   (txtWrap . T.concat . intersperse "  ") allTags
-
-articleTags :: [Tag] -> Widget Name
-articleTags ts =
-  withBorderStyle unicodeRounded $
-  overrideAttr (attrName "border") previewFooterAttr $
-  hBox $ intersperse (str " ") $
-  B.border . txt <$> ts

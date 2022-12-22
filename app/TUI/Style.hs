@@ -2,6 +2,8 @@
 module TUI.Style
   ( theMap
 
+  , articleTagsAttr
+  , articleTagsBorderAttr
   , authorBoxNameAttr
   , authorBoxTimeAttr
   , conduitAttr
@@ -21,7 +23,9 @@ theMap = attrMap (black `on` brightWhite)
          [ -- general attributes
            (attrName "conduitGreen", fg conduitGreen)
          , (attrName "pale9" , pale 9 )
+         , (attrName "pale10", pale 10)
          , (attrName "pale11", pale 11)
+         , (attrName "pale13", pale 13)
 
            -- element attributes
          , (conduitAttr, style bold)
@@ -29,7 +33,9 @@ theMap = attrMap (black `on` brightWhite)
          , (previewHeadingAttr, style bold)
          ]
 
-authorBoxNameAttr,
+articleTagsAttr,
+  articleTagsBorderAttr,
+  authorBoxNameAttr,
   authorBoxTimeAttr,
   conduitAttr,
   feedSepAttr,
@@ -38,6 +44,8 @@ authorBoxNameAttr,
   previewFooterAttr,
   previewHeadingAttr
   :: AttrName
+articleTagsAttr = attrName "pale10" <> attrName "articleTags"
+articleTagsBorderAttr = attrName "pale13" <> attrName "articleTagsBorder"
 authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
 authorBoxTimeAttr = attrName "pale11" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
