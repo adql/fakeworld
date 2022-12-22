@@ -1,6 +1,7 @@
 module TUI.Layout
   ( page
   , limitWidthAndCenter
+  , bodyWidth
   ) where
 
 import Brick
@@ -25,16 +26,19 @@ page st banner content =
 navigation :: Widget Name
 navigation =
   padTopBottom 1 $
-  limitWidthAndCenter $
+  limitWidthAndCenter bodyWidth $
   (conduit & padRight Max) <+>
   str "Home   Sign in   Sign up"  
 
 footer :: Widget Name
 footer =
   padTop (Pad 1) $
-  limitWidthAndCenter $
+  limitWidthAndCenter bodyWidth $
   conduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
   & padRight Max
 
-limitWidthAndCenter :: Widget n -> Widget n
-limitWidthAndCenter = C.hCenter . hLimit 120
+limitWidthAndCenter :: Int -> Widget n -> Widget n
+limitWidthAndCenter w = C.hCenter . hLimit w
+
+bodyWidth :: Int
+bodyWidth = 120

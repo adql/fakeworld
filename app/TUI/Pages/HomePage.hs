@@ -31,7 +31,7 @@ banner =
 
 content :: St -> Widget Name
 content st =
-  limitWidthAndCenter $
+  limitWidthAndCenter bodyWidth $
   feed (homeArticles st) <+> hLimitPercent 25 (popularTags $ allTags st)
 
 feed :: [Article] -> Widget Name
