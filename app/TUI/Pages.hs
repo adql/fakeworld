@@ -4,13 +4,25 @@ module TUI.Pages
   ) where
 
 import Brick
+import Graphics.Vty.Image
 
+import TUI.Layout
 import TUI.Pages.Article
 import TUI.Pages.HomePage
 import TUI.Types
 
 mainViewport :: Widget Name -> Widget Name
-mainViewport = viewport MainViewport Vertical
+mainViewport w = Widget Fixed Fixed $ do
+  -- Adding padding in order to make the footer stick to the bottom on
+  -- short pages; the gap is calculated manually because using a
+  -- greedy padding is not possible within a viewport
+  h <- availHeight <$> getContext
+  wH <- (imageHeight . image) <$> render w
+  fH <- (imageHeight . image) <$> render footer
+  let gap = h - wH - fH
+      padding = Pad $ if gap > 0 then gap else 0
+  render $ viewport MainViewport Vertical $
+    w <=> padTop padding footer
 
 serveMainWidget :: St -> Widget Name
 serveMainWidget st  = case currentPage st of

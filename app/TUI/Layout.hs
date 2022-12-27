@@ -3,6 +3,7 @@ module TUI.Layout
   , limitWidthAndCenter
   , bodyWidth
   , commentSectionWidth
+  , footer
   ) where
 
 import Brick
@@ -21,7 +22,8 @@ page st banner content =
        , banner st &
          padBottom (Pad 1)
        , content st
-       , footer
+       -- the footer is rendered directly in the Pages.mainViewport to
+       -- make it stick to the bottom
        ]
 
 navigation :: Widget Name
