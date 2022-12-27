@@ -11,6 +11,7 @@ import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 
 import TUI.Common
+import TUI.Style
 import TUI.Types
 
 page :: St
@@ -35,7 +36,8 @@ navigation =
 
 footer :: Widget Name
 footer =
-  padTop (Pad 1) $
+  withDefAttr footerAttr $
+  padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
   conduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
   & padRight Max

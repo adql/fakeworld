@@ -9,6 +9,7 @@ module TUI.Style
   , authorBoxNameAttr
   , authorBoxTimeAttr
   , conduitAttr
+  , footerAttr
   , homepageBannerAttr
   , previewDescAttr
   , previewFooterAttr
@@ -28,11 +29,13 @@ theMap = attrMap (black `on` brightWhite)
          , (attrName "pale10", pale 10)
          , (attrName "pale11", pale 11)
          , (attrName "pale13", pale 13)
+         , (attrName "pale14", pale 14)
 
            -- element attributes
          , (articlePageBannerAttr, brightWhite `on` (RGBColor 51 51 51))
          , (articlePageBannerAuthorNameAttr, fg brightWhite)
          , (conduitAttr, style bold)
+         , (footerAttr, bg $ RGBColor 243 243 243)
          , (homepageBannerAttr, brightWhite `on` conduitGreen)
          , (previewHeadingAttr, style bold)
          ]
@@ -44,6 +47,7 @@ articlePageBannerAttr,
   authorBoxNameAttr,
   authorBoxTimeAttr,
   conduitAttr,
+  footerAttr,
   homepageBannerAttr,
   previewDescAttr,
   previewFooterAttr,
@@ -57,6 +61,7 @@ articleTagsBorderAttr = attrName "pale13" <> attrName "articleTagsBorder"
 authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
 authorBoxTimeAttr = attrName "pale11" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
+footerAttr = attrName "pale11" <> attrName "footer"
 homepageBannerAttr = attrName "homepageBanner"
 previewDescAttr = attrName "pale9" <> attrName "previewDesc"
 previewFooterAttr = attrName "pale11" <> attrName "previewFooter"
