@@ -1,3 +1,4 @@
+{-# LANGUAGE NamedFieldPuns #-}
 module Main where
 
 import Brick
@@ -13,29 +14,34 @@ import TUI
 main :: IO ()
 main = do
   options <- execParser opts
-  runApp $ external options
+  runApp options
 
 data Options = Options
   { external :: Bool
+  , serverOnly :: Bool
   }
 
 optsParser :: Parser Options
 optsParser = Options
-      <$> switch ( long "use-external-api"
+      <$> switch ( long "external-api"
                    <> short 'e'
                    <> help "Whether to use api.realworld.io instead of local api" )
+      <*> switch ( long "server-only"
+                   <> short 's'
+                   <> help "Only run the server. Excludes --external-api")
 
 opts :: ParserInfo Options
 opts = info (optsParser <**> helper)
   ( fullDesc
     <> progDesc "Conduit (RealWorld) TUI frontend and backend" )
 
-runApp :: Bool -> IO ()
-runApp ext = do
-  let env = if ext
+runApp :: Options -> IO ()
+runApp (Options {external, serverOnly}) = do
+  let ext = if serverOnly then False else external
+      env = if ext
             then Env.Defaults.conduitDemoAPI
             else Env.Defaults.conduitLocalAPI
-  _ <- concurrently (defaultMain tui $ initialSt env)
+  _ <- concurrently (if serverOnly then return () else runTUI env)
                     (if ext then return () else runServer env)
   return ()
 
