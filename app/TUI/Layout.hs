@@ -9,8 +9,10 @@ module TUI.Layout
 import Brick
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
+import Data.List (intersperse)
 
 import TUI.Common
+import TUI.Events
 import TUI.Style
 import TUI.Types
 
@@ -19,7 +21,7 @@ page :: St
      -> (St -> Widget Name)
      -> Widget Name
 page st banner content =
-  vBox [ navigation
+  vBox [ navigation st
        , banner st &
          padBottom (Pad 1)
        , content st
@@ -27,19 +29,23 @@ page st banner content =
        -- make it stick to the bottom
        ]
 
-navigation :: Widget Name
-navigation =
+navigation :: St -> Widget Name
+navigation st =
   padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
-  (conduit & padRight Max) <+>
-  str "Home   Sign in   Sign up"  
+  (conduit st NavConduit & padRight Max) <+>
+  (hBox . intersperse (str "   ") . map (link st)) [ navHomeLink
+                                                   , navSignInLink
+                                                   , navSignUpLink
+                                                   ]
+--  (link st navHomeLink) <+> str "   Sign in   Sign up"  
 
-footer :: Widget Name
-footer =
+footer :: St -> Widget Name
+footer st =
   withDefAttr footerAttr $
   padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
-  conduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
+  conduit st FooterConduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
   & padRight Max
 
 limitWidthAndCenter :: Int -> Widget n -> Widget n
@@ -50,3 +56,17 @@ bodyWidth,
   :: Int
 bodyWidth = 120
 commentSectionWidth = bodyWidth * 2 `div` 3
+
+-- Links
+
+conduit :: St -> Name -> Widget Name
+conduit st name = overrideAttr linkAttr conduitAttr $
+  link st $ Link name openHome "conduit"
+
+navHomeLink,
+  navSignInLink,
+  navSignUpLink
+  :: Link
+navHomeLink = Link NavHome openHome "Home"
+navSignInLink = Link NavSignIn (return ()) "Sign in"
+navSignUpLink = Link NavSignUp (return ()) "Sign up"

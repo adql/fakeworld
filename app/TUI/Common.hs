@@ -1,11 +1,12 @@
 module TUI.Common
-  ( conduit
-  , articleTags
+  ( articleTags
   , authorBox
   , separator
+  , link
   ) where
 
 import Brick
+import qualified Brick.Focus as F
 import qualified Brick.Widgets.Border as B
 import Brick.Widgets.Border.Style (unicodeRounded)
 import Data.Function ((&))
@@ -17,9 +18,6 @@ import Data.Time.Format (formatTime, defaultTimeLocale)
 import API.Response.Types
 import TUI.Style
 import TUI.Types
-
-conduit :: Widget n
-conduit = withAttr conduitAttr (str "conduit")
 
 authorBox :: Text -> UTCTime -> Widget Name
 authorBox username time =
@@ -41,3 +39,11 @@ separator =
   withAttr separatorAttr $
   vLimit 1 (fill '_') &
   padBottom (Pad 1)
+
+link :: St -> Link -> Widget Name
+link st = F.withFocusRing (focus st) (
+  \focused l ->
+    let attr = if focused then linkFocusedAttr else linkAttr
+    in
+      withAttr attr $ str $ linkText l
+  )

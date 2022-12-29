@@ -1,11 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 module TUI.Events
-  ( mainViewportEvent
+  ( appEvent
+  , mainViewportEvent
   , openArticle
   , openHome
   ) where
 
 import Brick
+import Brick.Focus (FocusRing)
+import qualified Brick.Focus as F
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
 import Data.Text (Text)
@@ -16,9 +19,17 @@ import API.Request.Types (ConduitRequest, ConduitResponse, runConduitRequest)
 import API.Response.Types
 import TUI.Types
 
--- handleEvent :: BrickEvent Name e -> EventM Name St ()
--- handleEvent e@(VtyEvent ve) = case ve of
---   EvKey (KChar '\t') 
+appEvent :: BrickEvent Name e -> EventM Name St ()
+appEvent e@(VtyEvent ve) = case ve of
+  EvKey KBackTab _     -> focusEvent F.focusPrev
+  EvKey (KChar '\t') _ -> focusEvent F.focusNext
+  _                    -> mainViewportEvent e
+appEvent e = resizeOrQuit e
+
+focusEvent :: (FocusRing Name -> FocusRing Name)
+           -> EventM Name St ()
+focusEvent setter =
+  modify $ \st -> st { focus = setter (focus st) }
 
 mainViewportEvent :: BrickEvent Name e -> EventM Name St ()
 mainViewportEvent e@(VtyEvent ve) = case ve of

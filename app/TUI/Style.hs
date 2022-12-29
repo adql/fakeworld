@@ -11,6 +11,8 @@ module TUI.Style
   , conduitAttr
   , footerAttr
   , homepageBannerAttr
+  , linkAttr
+  , linkFocusedAttr
   , previewDescAttr
   , previewFooterAttr
   , previewHeadingAttr
@@ -37,6 +39,7 @@ theMap = attrMap (black `on` brightWhite)
          , (conduitAttr, style bold)
          , (footerAttr, bg $ RGBColor 243 243 243)
          , (homepageBannerAttr, brightWhite `on` conduitGreen)
+         , (linkFocusedAttr, currentAttr `withStyle` standout)
          , (previewHeadingAttr, style bold)
          ]
 
@@ -49,6 +52,8 @@ articlePageBannerAttr,
   conduitAttr,
   footerAttr,
   homepageBannerAttr,
+  linkAttr,
+  linkFocusedAttr,
   previewDescAttr,
   previewFooterAttr,
   previewHeadingAttr,
@@ -63,6 +68,8 @@ authorBoxTimeAttr = attrName "pale11" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
 footerAttr = attrName "pale11" <> attrName "footer"
 homepageBannerAttr = attrName "homepageBanner"
+linkAttr = attrName "conduitGreen" <> attrName "link"
+linkFocusedAttr = linkAttr <> attrName "linkFocused"
 previewDescAttr = attrName "pale9" <> attrName "previewDesc"
 previewFooterAttr = attrName "pale11" <> attrName "previewFooter"
 previewHeadingAttr = attrName "previewHeading"
