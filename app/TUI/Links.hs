@@ -1,5 +1,6 @@
 module TUI.Links
   ( link, conduit
+  , updateStLinks
   , footerConduitLink
   , navConduitLink
   , navHomeLink
@@ -9,6 +10,7 @@ module TUI.Links
   where
 
 import Brick
+import Brick.Focus (FocusRing)
 import qualified Brick.Focus as F
 
 import TUI.Events
@@ -25,8 +27,29 @@ link st = F.withFocusRing (focus st) $
 conduit :: St -> Link -> Widget Name
 conduit st = overrideAttr linkAttr conduitAttr . link st
 
--- Links for the navbar and the footer
+updateStLinks :: [Link] -> St -> St
+updateStLinks ls st = st { links = permanentLinks <> ls
+                         , focus = mkFocusRing ls
+                         }
 
+permanentLinks :: [Link]
+permanentLinks = [ footerConduitLink
+                 , navConduitLink
+                 , navHomeLink
+                 , navSignInLink
+                 , navSignUpLink
+                 ]
+
+mkFocusRing :: [Link] -> FocusRing Name
+mkFocusRing ls = F.focusRing
+               $ NavConduit
+               : NavHome
+               : NavSignIn
+               : NavSignUp
+               : (linkName <$> ls)
+               <> [FooterConduit]
+
+-- Links for the navbar and the footer
 footerConduitLink,
   navConduitLink,
   navHomeLink,

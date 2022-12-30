@@ -27,6 +27,7 @@ data Name = MainViewport
 
 data St = St
   { currentPage :: Page
+  , links :: [Link]
   , focus :: FocusRing Name
   , homeArticleOffset :: ByteString
   , homeArticles :: [Article]
