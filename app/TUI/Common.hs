@@ -41,9 +41,8 @@ separator =
   padBottom (Pad 1)
 
 link :: St -> Link -> Widget Name
-link st = F.withFocusRing (focus st) (
+link st = F.withFocusRing (focus st) $
   \focused l ->
     let attr = if focused then linkFocusedAttr else linkAttr
     in
       withAttr attr $ str $ linkText l
-  )
