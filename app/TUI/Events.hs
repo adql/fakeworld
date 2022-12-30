@@ -11,6 +11,7 @@ import Brick.Focus (FocusRing)
 import qualified Brick.Focus as F
 import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
+import Data.List (find)
 import Data.Text (Text)
 import Graphics.Vty.Input.Events (Event(..), Key(..))
 
@@ -23,6 +24,7 @@ appEvent :: BrickEvent Name e -> EventM Name St ()
 appEvent e@(VtyEvent ve) = case ve of
   EvKey KBackTab _     -> focusEvent F.focusPrev
   EvKey (KChar '\t') _ -> focusEvent F.focusNext
+  EvKey KEnter _       -> openLink
   _                    -> mainViewportEvent e
 appEvent e = resizeOrQuit e
 
@@ -30,6 +32,14 @@ focusEvent :: (FocusRing Name -> FocusRing Name)
            -> EventM Name St ()
 focusEvent setter =
   modify $ \st -> st { focus = setter (focus st) }
+
+openLink :: EventM Name St ()
+openLink = do
+  current <- F.focusGetCurrent <$> gets focus
+  flip (maybe $ return ()) current $ \n -> do
+    ls <- gets links
+    maybe (return ()) linkHandler $
+      find ((== n) . linkName) ls
 
 mainViewportEvent :: BrickEvent Name e -> EventM Name St ()
 mainViewportEvent e@(VtyEvent ve) = case ve of
