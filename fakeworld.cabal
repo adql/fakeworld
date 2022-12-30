@@ -71,6 +71,7 @@ executable fakeworld
         TUI.Events
         TUI.Common
         TUI.Layout
+        TUI.Links
         TUI.Pages
         TUI.Pages.Article
         TUI.Pages.HomePage

@@ -2,11 +2,9 @@ module TUI.Common
   ( articleTags
   , authorBox
   , separator
-  , link
   ) where
 
 import Brick
-import qualified Brick.Focus as F
 import qualified Brick.Widgets.Border as B
 import Brick.Widgets.Border.Style (unicodeRounded)
 import Data.Function ((&))
@@ -39,10 +37,3 @@ separator =
   withAttr separatorAttr $
   vLimit 1 (fill '_') &
   padBottom (Pad 1)
-
-link :: St -> Link -> Widget Name
-link st = F.withFocusRing (focus st) $
-  \focused l ->
-    let attr = if focused then linkFocusedAttr else linkAttr
-    in
-      withAttr attr $ str $ linkText l

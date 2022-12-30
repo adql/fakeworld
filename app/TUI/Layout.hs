@@ -13,6 +13,7 @@ import Data.List (intersperse)
 
 import TUI.Common
 import TUI.Events
+import TUI.Links
 import TUI.Style
 import TUI.Types
 
@@ -33,7 +34,7 @@ navigation :: St -> Widget Name
 navigation st =
   padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
-  (conduit st NavConduit & padRight Max) <+>
+  (conduit st navConduitLink & padRight Max) <+>
   (hBox . intersperse (str "   ") . map (link st)) [ navHomeLink
                                                    , navSignInLink
                                                    , navSignUpLink
@@ -45,7 +46,7 @@ footer st =
   withDefAttr footerAttr $
   padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
-  conduit st FooterConduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
+  conduit st footerConduitLink <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
   & padRight Max
 
 limitWidthAndCenter :: Int -> Widget n -> Widget n
@@ -56,17 +57,3 @@ bodyWidth,
   :: Int
 bodyWidth = 120
 commentSectionWidth = bodyWidth * 2 `div` 3
-
--- Links
-
-conduit :: St -> Name -> Widget Name
-conduit st name = overrideAttr linkAttr conduitAttr $
-  link st $ Link name openHome "conduit"
-
-navHomeLink,
-  navSignInLink,
-  navSignUpLink
-  :: Link
-navHomeLink = Link NavHome openHome "Home"
-navSignInLink = Link NavSignIn (return ()) "Sign in"
-navSignUpLink = Link NavSignUp (return ()) "Sign up"
