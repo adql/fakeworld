@@ -23,25 +23,30 @@ import Brick
 import Data.Word (Word8)
 import Graphics.Vty.Attributes
 
-theMap :: AttrMap
-theMap = attrMap (black `on` brightWhite)
-         [ -- general attributes
-           (attrName "conduitGreen", fg conduitGreen)
-         , (attrName "pale9" , pale 9 )
-         , (attrName "pale10", pale 10)
-         , (attrName "pale11", pale 11)
-         , (attrName "pale13", pale 13)
-         , (attrName "pale14", pale 14)
+theMap :: Bool -> AttrMap
+theMap dark =
+  let def = if dark then brightWhite `on` black
+            else black `on` brightWhite
+      footerBg = if dark then RGBColor 15 15 15 else RGBColor 243 243 243
+  in
+    attrMap def
+    [ -- general attributes
+      (attrName "conduitGreen", fg conduitGreen)
+    , (attrName "pale9" , pale 9 )
+    , (attrName "pale10", pale 10)
+    , (attrName "pale11", pale 11)
+    , (attrName "pale13", pale 13)
+    , (attrName "pale14", pale 14)
 
-           -- element attributes
-         , (articlePageBannerAttr, brightWhite `on` (RGBColor 51 51 51))
-         , (articlePageBannerAuthorNameAttr, fg brightWhite)
-         , (conduitAttr, style bold)
-         , (footerAttr, bg $ RGBColor 243 243 243)
-         , (homepageBannerAttr, brightWhite `on` conduitGreen)
-         , (linkFocusedAttr, currentAttr `withStyle` standout)
-         , (previewHeadingAttr, style bold)
-         ]
+    -- element attributes
+    , (articlePageBannerAttr, brightWhite `on` (RGBColor 51 51 51))
+    , (articlePageBannerAuthorNameAttr, fg brightWhite)
+    , (conduitAttr, style bold)
+    , (footerAttr, bg footerBg)
+    , (homepageBannerAttr, brightWhite `on` conduitGreen)
+    , (linkFocusedAttr, currentAttr `withStyle` standout)
+    , (previewHeadingAttr, style bold)
+    ]
 
 articlePageBannerAttr,
   articlePageBannerAuthorNameAttr,

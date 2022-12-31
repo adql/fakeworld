@@ -14,9 +14,10 @@ import TUI.Pages
 import TUI.Style
 import TUI.Types
 
-initialSt :: Env -> St
-initialSt env' = updateStLinks [] $
+initialSt :: Env -> Bool -> St
+initialSt env' dark = updateStLinks [] $
   St { currentPage = HomePage
+     , darkMode = dark
      , links = []
      , focus = F.focusRing []
      , homeArticleOffset = "0"
@@ -31,7 +32,7 @@ tui = App { appDraw = \st -> [mainViewport st $ serveMainWidget st]
           , appChooseCursor = neverShowCursor
           , appHandleEvent = appEvent
           , appStartEvent = initiateApp
-          , appAttrMap = const theMap
+          , appAttrMap = theMap . darkMode
           }
 
 initiateApp :: EventM Name St ()

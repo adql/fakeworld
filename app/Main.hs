@@ -19,6 +19,7 @@ main = do
 data Options = Options
   { external :: Bool
   , serverOnly :: Bool
+  , dark :: Bool
   }
 
 optsParser :: Parser Options
@@ -29,6 +30,10 @@ optsParser = Options
       <*> switch ( long "server-only"
                    <> short 's'
                    <> help "Only run the server. Excludes --external-api")
+      <*> switch ( long "dark-mode"
+                   <> short 'd'
+                   <> help "Start the application in dark mode"
+                 )
 
 opts :: ParserInfo Options
 opts = info (optsParser <**> helper)
@@ -36,18 +41,18 @@ opts = info (optsParser <**> helper)
     <> progDesc "Conduit (RealWorld) TUI frontend and backend" )
 
 runApp :: Options -> IO ()
-runApp (Options {external, serverOnly}) = do
+runApp (Options {external, serverOnly, dark}) = do
   let ext = if serverOnly then False else external
       env = if ext
             then Env.Defaults.conduitDemoAPI
             else Env.Defaults.conduitLocalAPI
-  _ <- concurrently (if serverOnly then return () else runTUI env)
+  _ <- concurrently (if serverOnly then return () else runTUI env dark)
                     (if ext then return () else runServer env)
   return ()
 
-runTUI :: Env -> IO ()
-runTUI env = do
-  _ <- defaultMain tui $ initialSt env
+runTUI :: Env -> Bool -> IO ()
+runTUI env dark = do
+  _ <- defaultMain tui $ initialSt env dark
   return ()
 
 runServer :: Env -> IO ()
