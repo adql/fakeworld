@@ -11,8 +11,6 @@ import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.List (intersperse)
 
-import TUI.Common
-import TUI.Events
 import TUI.Links
 import TUI.Style
 import TUI.Types
@@ -39,7 +37,6 @@ navigation st =
                                                    , navSignInLink
                                                    , navSignUpLink
                                                    ]
---  (link st navHomeLink) <+> str "   Sign in   Sign up"  
 
 footer :: St -> Widget Name
 footer st =
