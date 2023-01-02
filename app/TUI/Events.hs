@@ -5,6 +5,12 @@ module TUI.Events
   , openArticle
   , openHome
   , openNotImplemented
+
+  , footerConduitLink
+  , navConduitLink
+  , navHomeLink
+  , navSignInLink
+  , navSignUpLink
   ) where
 
 import Brick
@@ -19,6 +25,7 @@ import Graphics.Vty.Input.Events (Event(..), Key(..))
 import API.Request
 import API.Request.Types (ConduitRequest, ConduitResponse, runConduitRequest)
 import API.Response.Types
+import TUI.Common.Links
 import TUI.Types
 
 appEvent :: BrickEvent Name e -> EventM Name St ()
@@ -59,6 +66,7 @@ openHome :: EventM Name St ()
 openHome = do
   artcls <- getHomeArticles
   tgs <- getAllTags
+  updateLinks [] -- TODO: expand with feed links
   modify $ \s -> s { currentPage = HomePage
                    , homeArticles = artcls
                    , allTags = tgs
@@ -67,13 +75,15 @@ openHome = do
 openArticle :: ByteString -> EventM Name St ()
 openArticle slug = do
   artcl <- getArticle slug
+  updateLinks []
   modify $ \s -> s { currentPage = ArticlePage
                    , articleCurrent = artcl
                    }
 
 -- For development
 openNotImplemented :: EventM Name St ()
-openNotImplemented =
+openNotImplemented = do
+  updateLinks []
   modify $ \s -> s { currentPage = NotImplementedPage }
 
 -- EventM actions to get content
@@ -101,3 +111,28 @@ request :: ConduitRequest (ConduitResponse a)
 request rqst = do
   env' <- gets env
   liftIO $ runConduitRequest env' rqst
+
+-- Standard layout links and event handler
+
+updateLinks :: [Link] -> EventM Name St ()
+updateLinks ls = modify $ updateStLinks $ mkAllLinksList ls
+
+mkAllLinksList :: [Link] -> [Link]
+mkAllLinksList ls = navConduitLink
+                  : navHomeLink
+                  : navSignInLink
+                  : navSignUpLink
+                  : ls
+                 <> [footerConduitLink]                  
+
+footerConduitLink,
+  navConduitLink,
+  navHomeLink,
+  navSignInLink,
+  navSignUpLink
+  :: Link
+footerConduitLink = Link FooterConduit openHome "conduit"
+navConduitLink = Link NavConduit openHome "conduit"
+navHomeLink = Link NavHome openHome "Home"
+navSignInLink = Link NavSignIn openNotImplemented "Sign in"
+navSignUpLink = Link NavSignUp openNotImplemented "Sign up"

@@ -4,9 +4,6 @@ module TUI.Layout
   , bodyWidth
   , commentSectionWidth
   , footer
-
-  -- Reexports
-  , updateStLinks
   ) where
 
 import Brick
@@ -15,6 +12,7 @@ import Data.Function ((&))
 import Data.List (intersperse)
 
 import TUI.Common.Links
+import TUI.Events
 import TUI.Style
 import TUI.Types
 

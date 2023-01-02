@@ -8,14 +8,13 @@ import Brick
 import qualified Brick.Focus as F
 
 import Env
-import TUI.Common.Links
 import TUI.Events
 import TUI.Pages
 import TUI.Style
 import TUI.Types
 
 initialSt :: Env -> Bool -> St
-initialSt env' dark = updateStLinks [] $
+initialSt env' dark = 
   St { currentPage = HomePage
      , darkMode = dark
      , links = []
