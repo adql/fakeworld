@@ -4,6 +4,9 @@ module TUI.Layout
   , bodyWidth
   , commentSectionWidth
   , footer
+
+  -- Reexports
+  , updateStLinks
   ) where
 
 import Brick
@@ -11,7 +14,7 @@ import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.List (intersperse)
 
-import TUI.Links
+import TUI.Common.Links
 import TUI.Style
 import TUI.Types
 

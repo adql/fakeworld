@@ -70,8 +70,8 @@ executable fakeworld
         TUI
         TUI.Events
         TUI.Common
+        TUI.Common.Links
         TUI.Layout
-        TUI.Links
         TUI.Pages
         TUI.Pages.Article
         TUI.Pages.HomePage

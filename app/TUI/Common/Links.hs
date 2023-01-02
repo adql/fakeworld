@@ -1,4 +1,4 @@
-module TUI.Links
+module TUI.Common.Links
   ( link, conduit
   , updateStLinks
   , footerConduitLink

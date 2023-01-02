@@ -8,8 +8,8 @@ import Brick
 import qualified Brick.Focus as F
 
 import Env
+import TUI.Common.Links
 import TUI.Events
-import TUI.Links
 import TUI.Pages
 import TUI.Style
 import TUI.Types
