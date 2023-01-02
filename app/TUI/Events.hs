@@ -57,8 +57,8 @@ mainViewportEvent e = resizeOrQuit e
 
 openHome :: EventM Name St ()
 openHome = do
-  artcls <- updateHomeArticles
-  tgs <- updateAllTags
+  artcls <- getHomeArticles
+  tgs <- getAllTags
   modify $ \s -> s { currentPage = HomePage
                    , homeArticles = artcls
                    , allTags = tgs
@@ -66,7 +66,7 @@ openHome = do
 
 openArticle :: ByteString -> EventM Name St ()
 openArticle slug = do
-  artcl <- updateArticle slug
+  artcl <- getArticle slug
   modify $ \s -> s { currentPage = ArticlePage
                    , articleCurrent = artcl
                    }
@@ -76,23 +76,23 @@ openNotImplemented :: EventM Name St ()
 openNotImplemented =
   modify $ \s -> s { currentPage = NotImplementedPage }
 
--- EventM actions to update state record fields
+-- EventM actions to get content
 
-updateHomeArticles :: EventM Name St [Article]
-updateHomeArticles = do
+getHomeArticles :: EventM Name St [Article]
+getHomeArticles = do
   offset <- homeArticleOffset <$> get
   articles' <- request $
                requestArticleList [("limit", Just "10"),
                                    ("offset", Just $ offset)]
   return $ either (const []) articles articles'
 
-updateAllTags :: EventM Name St [Text]
-updateAllTags = do
+getAllTags :: EventM Name St [Text]
+getAllTags = do
   tags' <- request requestTags
   return $ either (const []) tags tags'
 
-updateArticle :: ByteString -> EventM Name St (Maybe Article)
-updateArticle slug = do
+getArticle :: ByteString -> EventM Name St (Maybe Article)
+getArticle slug = do
   artcl <- request $ requestArticle slug
   return $ either (const Nothing) (Just . article) artcl
 
