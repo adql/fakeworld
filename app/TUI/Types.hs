@@ -43,6 +43,7 @@ data Page = HomePage
           | SettingsPage
           | CreateEditArticlePage
           | ArticlePage
+          | NotImplementedPage --for development
 
 data Link = Link
   { linkName :: Name

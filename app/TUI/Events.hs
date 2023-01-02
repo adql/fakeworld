@@ -4,6 +4,7 @@ module TUI.Events
   , mainViewportEvent
   , openArticle
   , openHome
+  , openNotImplemented
   ) where
 
 import Brick
@@ -69,6 +70,11 @@ openArticle slug = do
   modify $ \s -> s { currentPage = ArticlePage
                    , articleCurrent = artcl
                    }
+
+-- For development
+openNotImplemented :: EventM Name St ()
+openNotImplemented =
+  modify $ \s -> s { currentPage = NotImplementedPage }
 
 -- EventM actions to update state record fields
 

@@ -59,5 +59,5 @@ footerConduitLink,
 footerConduitLink = Link FooterConduit openHome "conduit"
 navConduitLink = Link NavConduit openHome "conduit"
 navHomeLink = Link NavHome openHome "Home"
-navSignInLink = Link NavSignIn (return ()) "Sign in"
-navSignUpLink = Link NavSignUp (return ()) "Sign up"
+navSignInLink = Link NavSignIn openNotImplemented "Sign in"
+navSignUpLink = Link NavSignUp openNotImplemented "Sign up"

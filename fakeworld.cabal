@@ -75,6 +75,8 @@ executable fakeworld
         TUI.Pages
         TUI.Pages.Article
         TUI.Pages.HomePage
+        -- for development:
+        TUI.Pages.NotImplemented
         TUI.Style
         TUI.Types
 

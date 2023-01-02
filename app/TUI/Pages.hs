@@ -9,6 +9,7 @@ import Graphics.Vty.Image
 import TUI.Layout
 import TUI.Pages.Article
 import TUI.Pages.HomePage
+import TUI.Pages.NotImplemented
 import TUI.Types
 
 mainViewport :: St -> Widget Name -> Widget Name
@@ -26,6 +27,7 @@ mainViewport st w = Widget Fixed Fixed $ do
 
 serveMainWidget :: St -> Widget Name
 serveMainWidget st  = case currentPage st of
-  HomePage    -> homePage st
-  ArticlePage -> articlePage st
-  _           -> undefined
+  HomePage           -> homePage st
+  ArticlePage        -> articlePage st
+  NotImplementedPage -> notImplementedPage st --for development
+  _                  -> undefined
