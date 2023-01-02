@@ -20,6 +20,7 @@ import Control.Monad.IO.Class (liftIO)
 import Data.ByteString (ByteString)
 import Data.List (find)
 import Data.Text (Text)
+import qualified Data.Text.Encoding as TE
 import Graphics.Vty.Input.Events (Event(..), Key(..))
 
 import API.Request
@@ -66,7 +67,7 @@ openHome :: EventM Name St ()
 openHome = do
   artcls <- getHomeArticles
   tgs <- getAllTags
-  updateLinks [] -- TODO: expand with feed links
+  updateLinks $ mkFeedLinks artcls
   modify $ \s -> s { currentPage = HomePage
                    , homeArticles = artcls
                    , allTags = tgs
@@ -85,6 +86,14 @@ openNotImplemented :: EventM Name St ()
 openNotImplemented = do
   updateLinks []
   modify $ \s -> s { currentPage = NotImplementedPage }
+
+mkFeedLinks :: [Article] -> [Link]
+mkFeedLinks artcls = flip map artcls $ \artcl ->
+  let slug = articleSlug artcl in
+    Link { linkName = LinkName slug
+         , linkHandler = openArticle $ TE.encodeUtf8 slug
+         , linkText = show $ articleTitle artcl
+         }
 
 -- EventM actions to get content
 

@@ -15,7 +15,7 @@ module TUI.Style
   , linkFocusedAttr
   , previewDescAttr
   , previewFooterAttr
-  , previewHeadingAttr
+  , previewTitleAttr
   , separatorAttr
   ) where
 
@@ -45,7 +45,7 @@ theMap dark =
     , (footerAttr, bg footerBg)
     , (homepageBannerAttr, brightWhite `on` conduitGreen)
     , (linkFocusedAttr, currentAttr `withStyle` standout)
-    , (previewHeadingAttr, style bold)
+    , (previewTitleAttr, style bold)
     ]
 
 articlePageBannerAttr,
@@ -61,7 +61,7 @@ articlePageBannerAttr,
   linkFocusedAttr,
   previewDescAttr,
   previewFooterAttr,
-  previewHeadingAttr,
+  previewTitleAttr,
   separatorAttr
   :: AttrName
 articlePageBannerAttr = attrName "articleBanner"
@@ -77,7 +77,7 @@ linkAttr = attrName "conduitGreen" <> attrName "link"
 linkFocusedAttr = linkAttr <> attrName "linkFocused"
 previewDescAttr = attrName "pale9" <> attrName "previewDesc"
 previewFooterAttr = attrName "pale11" <> attrName "previewFooter"
-previewHeadingAttr = attrName "previewHeading"
+previewTitleAttr = attrName "previewTitle"
 separatorAttr = attrName "pale13" <> attrName "feedSep"
 
 style :: Style -> Attr

@@ -13,6 +13,7 @@ import qualified Data.Text as T
 import API.Response.Types
 
 import TUI.Common
+import TUI.Common.Links
 import TUI.Layout
 import TUI.Style
 import TUI.Types
@@ -32,19 +33,19 @@ banner =
 content :: St -> Widget Name
 content st =
   limitWidthAndCenter bodyWidth $
-  feed (homeArticles st) <+> hLimitPercent 25 (popularTags $ allTags st)
+  feed st <+> hLimitPercent 25 (popularTags $ allTags st)
 
-feed :: [Article] -> Widget Name
-feed articles =
+feed :: St -> Widget Name
+feed st =
   padRight (Pad 1) $
   vBox $ intersperse separator $
-  articlePreview <$> articles
+  articlePreview st <$> homeArticles st
   
-articlePreview :: Article -> Widget Name
-articlePreview article =
+articlePreview :: St -> Article -> Widget Name
+articlePreview st article =
   articlePreviewHeader article
   <=>
-  (withAttr previewHeadingAttr . txt . articleTitle) article
+  (overrideAttr linkAttr previewTitleAttr . linkArticle st) article
   <=>
   (withAttr previewDescAttr . txt . articleDescription) article
   <=>

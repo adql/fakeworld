@@ -22,6 +22,8 @@ data Name = MainViewport
           | NavSignIn
           | NavSignUp
           | FooterConduit
+
+          | LinkName Text
           
   deriving (Show, Eq, Ord)
 
