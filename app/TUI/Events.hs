@@ -45,10 +45,13 @@ focusEvent setter =
 openLink :: EventM Name St ()
 openLink = do
   current <- F.focusGetCurrent <$> gets focus
-  flip (maybe $ return ()) current $ \n -> do
-    ls <- gets links
-    maybe (return ()) linkHandler $
-      find ((== n) . linkName) ls
+  maybe' current $ \name -> do
+    l' <- find ((== name) . linkName) <$> gets links
+    maybe' l' $ \l ->
+      vScrollToBeginning (viewportScroll MainViewport)
+      >> linkHandler l
+  where
+    maybe' = flip (maybe $ return ())
 
 mainViewportEvent :: BrickEvent Name e -> EventM Name St ()
 mainViewportEvent e@(VtyEvent ve) = case ve of

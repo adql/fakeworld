@@ -18,8 +18,9 @@ link :: St -> Link -> Widget Name
 link st = F.withFocusRing (focus st) $
   \focused l ->
     let attr = if focused then linkFocusedAttr else linkAttr
+        visible' w = if focused then visible w else w
     in
-      withAttr attr $ str $ linkText l
+      withAttr attr $ visible' $ str $ linkText l
 
 conduit :: St -> Link -> Widget Name
 conduit st = overrideAttr linkAttr conduitAttr . link st
