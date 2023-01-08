@@ -8,7 +8,6 @@ module TUI.Types
 
 import Brick
 import Brick.Focus (FocusRing)
-import Data.ByteString (ByteString)
 import Data.Text (Text)
 import Servant.Client
 
