@@ -15,15 +15,15 @@ import TUI.Types
 
 initialSt :: Env -> Bool -> St
 initialSt env' dark = 
-  St { currentPage = HomePage
-     , darkMode = dark
-     , links = []
-     , focus = F.focusRing []
-     , homeArticleOffset = "0"
-     , homeArticles = []
-     , articleCurrent = Nothing
-     , allTags = []
-     , env = env'
+  St { stCurrentPage = HomePage
+     , stDarkMode = dark
+     , stLinks = []
+     , stFocus = F.focusRing []
+     , stHomeArticleOffset = "0"
+     , stHomeArticles = []
+     , stArticleCurrent = Nothing
+     , stAllTags = []
+     , stEnv = env'
      }
 
 tui :: App St e Name
@@ -31,7 +31,7 @@ tui = App { appDraw = \st -> [mainViewport st $ serveMainWidget st]
           , appChooseCursor = neverShowCursor
           , appHandleEvent = appEvent
           , appStartEvent = initiateApp
-          , appAttrMap = theMap . darkMode
+          , appAttrMap = theMap . stDarkMode
           }
 
 initiateApp :: EventM Name St ()

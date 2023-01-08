@@ -28,15 +28,15 @@ data Name = MainViewport
   deriving (Show, Eq, Ord)
 
 data St = St
-  { currentPage :: Page
-  , darkMode :: Bool
-  , links :: [Link]
-  , focus :: FocusRing Name
-  , homeArticleOffset :: ByteString
-  , homeArticles :: [Article]
-  , articleCurrent :: Maybe Article
-  , allTags :: [Text]
-  , env :: Env
+  { stCurrentPage :: Page
+  , stDarkMode :: Bool
+  , stLinks :: [Link]
+  , stFocus :: FocusRing Name
+  , stHomeArticleOffset :: ByteString
+  , stHomeArticles :: [Article]
+  , stArticleCurrent :: Maybe Article
+  , stAllTags :: [Text]
+  , stEnv :: Env
   }
 
 data Page = HomePage

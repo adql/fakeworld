@@ -26,7 +26,7 @@ mainViewport st w = Widget Fixed Fixed $ do
     w <=> padTop padding (footer st)
 
 serveMainWidget :: St -> Widget Name
-serveMainWidget st  = case currentPage st of
+serveMainWidget st  = case stCurrentPage st of
   HomePage           -> homePage st
   ArticlePage        -> articlePage st
   NotImplementedPage -> notImplementedPage st --for development

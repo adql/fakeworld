@@ -16,14 +16,14 @@ import TUI.Style
 import TUI.Types
 
 articlePage :: St -> Widget Name
-articlePage st = case articleCurrent st of
+articlePage st = case stArticleCurrent st of
   Just _ -> page st banner content
   Nothing -> emptyWidget --make some "404"-ish (for completeness,
                          --should actually never happen)
 
 banner :: St -> Widget Name
-banner (St { articleCurrent }) =
-  let artcl = unsafeGetArticle articleCurrent
+banner (St { stArticleCurrent }) =
+  let artcl = unsafeGetArticle stArticleCurrent
       username = profileUsername $ articleAuthor artcl
       createdAt = articleCreatedAt artcl
   in
@@ -36,8 +36,8 @@ banner (St { articleCurrent }) =
       authorBox username createdAt )
 
 content :: St -> Widget Name
-content st@(St { articleCurrent }) =
-  let artcl = unsafeGetArticle articleCurrent
+content st@(St { stArticleCurrent }) =
+  let artcl = unsafeGetArticle stArticleCurrent
   in
     limitWidthAndCenter bodyWidth $
     vBox [ (txtWrap $ articleBody artcl) & padBottom (Pad 2)

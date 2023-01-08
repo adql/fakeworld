@@ -33,13 +33,13 @@ banner =
 content :: St -> Widget Name
 content st =
   limitWidthAndCenter bodyWidth $
-  feed st <+> hLimitPercent 25 (popularTags $ allTags st)
+  feed st <+> hLimitPercent 25 (popularTags $ stAllTags st)
 
 feed :: St -> Widget Name
 feed st =
   padRight (Pad 1) $
   vBox $ intersperse separator $
-  articlePreview st <$> homeArticles st
+  articlePreview st <$> stHomeArticles st
   
 articlePreview :: St -> Article -> Widget Name
 articlePreview st article =

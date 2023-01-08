@@ -40,13 +40,13 @@ appEvent e = resizeOrQuit e
 focusEvent :: (FocusRing Name -> FocusRing Name)
            -> EventM Name St ()
 focusEvent setter =
-  modify $ \st -> st { focus = setter (focus st) }
+  modify $ \st -> st { stFocus = setter (stFocus st) }
 
 openLink :: EventM Name St ()
 openLink = do
-  current <- F.focusGetCurrent <$> gets focus
+  current <- F.focusGetCurrent <$> gets stFocus
   maybe' current $ \name -> do
-    l' <- find ((== name) . linkName) <$> gets links
+    l' <- find ((== name) . linkName) <$> gets stLinks
     maybe' l' $ \l ->
       vScrollToBeginning (viewportScroll MainViewport)
       >> linkHandler l
@@ -71,24 +71,24 @@ openHome = do
   artcls <- getHomeArticles
   tgs <- getAllTags
   updateLinks $ mkFeedLinks artcls
-  modify $ \s -> s { currentPage = HomePage
-                   , homeArticles = artcls
-                   , allTags = tgs
+  modify $ \s -> s { stCurrentPage = HomePage
+                   , stHomeArticles = artcls
+                   , stAllTags = tgs
                    }
 
 openArticle :: ByteString -> EventM Name St ()
 openArticle slug = do
   artcl <- getArticle slug
   updateLinks []
-  modify $ \s -> s { currentPage = ArticlePage
-                   , articleCurrent = artcl
+  modify $ \s -> s { stCurrentPage = ArticlePage
+                   , stArticleCurrent = artcl
                    }
 
 -- For development
 openNotImplemented :: EventM Name St ()
 openNotImplemented = do
   updateLinks []
-  modify $ \s -> s { currentPage = NotImplementedPage }
+  modify $ \s -> s { stCurrentPage = NotImplementedPage }
 
 mkFeedLinks :: [Article] -> [Link]
 mkFeedLinks artcls = flip map artcls $ \artcl ->
@@ -102,7 +102,7 @@ mkFeedLinks artcls = flip map artcls $ \artcl ->
 
 getHomeArticles :: EventM Name St [Article]
 getHomeArticles = do
-  offset <- homeArticleOffset <$> get
+  offset <- stHomeArticleOffset <$> get
   articles' <- request $
                requestArticleList [("limit", Just "10"),
                                    ("offset", Just $ offset)]
@@ -121,8 +121,8 @@ getArticle slug = do
 request :: ConduitRequest (ConduitResponse a)
         -> EventM Name St (ConduitResponse a)
 request rqst = do
-  env' <- gets env
-  liftIO $ runConduitRequest env' rqst
+  env <- gets stEnv
+  liftIO $ runConduitRequest env rqst
 
 -- Standard layout links and event handler
 
