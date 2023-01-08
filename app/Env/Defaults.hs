@@ -1,19 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Env.Defaults
   ( aPIBasePath
-  , conduitDemoAPI
-  , conduitLocalAPI
+  , conduitDemoBaseUrl
+  , conduitLocalBaseUrl
   ) where
 
 import Data.ByteString (ByteString)
+import Servant.Client
 
-import Env
+conduitDemoBaseUrl :: BaseUrl
+conduitDemoBaseUrl = BaseUrl Https "api.realworld.io" 443 ""
 
-conduitDemoAPI :: Env
-conduitDemoAPI = Env "api.realworld.io" 443 True
-
-conduitLocalAPI :: Env
-conduitLocalAPI = Env "localhost" 8000 False
+conduitLocalBaseUrl :: BaseUrl
+conduitLocalBaseUrl = BaseUrl Http "localhost" 8000 ""
 
 aPIBasePath :: ByteString
 aPIBasePath = "/api"

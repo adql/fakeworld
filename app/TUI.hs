@@ -6,24 +6,24 @@ module TUI
 
 import Brick
 import qualified Brick.Focus as F
+import Servant.Client (BaseUrl)
 
-import Env
 import TUI.Events
 import TUI.Pages
 import TUI.Style
 import TUI.Types
 
-initialSt :: Env -> Bool -> St
-initialSt env' dark = 
+initialSt :: BaseUrl -> Bool -> St
+initialSt baseUrl dark = 
   St { stCurrentPage = HomePage
      , stDarkMode = dark
      , stLinks = []
      , stFocus = F.focusRing []
-     , stHomeArticleOffset = "0"
+     , stHomeArticleOffset = 0
      , stHomeArticles = []
      , stArticleCurrent = Nothing
      , stAllTags = []
-     , stEnv = env'
+     , stBaseUrl = baseUrl
      }
 
 tui :: App St e Name

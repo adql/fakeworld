@@ -60,10 +60,8 @@ executable fakeworld
     -- Modules included in this executable, other than Main.
     other-modules:
         API.Request
-        API.Request.Endpoints
         API.Request.Types
         API.Response.Types
-        Env
         Env.Defaults
         Server
         Server.DummyDB
@@ -94,6 +92,7 @@ executable fakeworld
                   , http-types ^>=0.12.3
                   , mtl ^>=2.2.2
                   , optparse-applicative ^>= 0.17.0.0
+                  , servant-client ^>=0.19
                   , servant-server ^>=0.19.2
                   , text ^>=2.0.1
                   , time ^>=1.12.2

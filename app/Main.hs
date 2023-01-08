@@ -5,8 +5,8 @@ import Brick
 import Control.Concurrent.Async (concurrently)
 import Network.Wai.Handler.Warp
 import Options.Applicative
+import Servant.Client (BaseUrl, baseUrlPort)
 
-import Env
 import qualified Env.Defaults
 import Server
 import TUI
@@ -43,17 +43,17 @@ opts = info (optsParser <**> helper)
 runApp :: Options -> IO ()
 runApp (Options {external, serverOnly, dark}) = do
   let ext = if serverOnly then False else external
-      env = if ext
-            then Env.Defaults.conduitDemoAPI
-            else Env.Defaults.conduitLocalAPI
-  _ <- concurrently (if serverOnly then return () else runTUI env dark)
-                    (if ext then return () else runServer env)
+      baseUrl = if ext
+                then Env.Defaults.conduitDemoBaseUrl
+                else Env.Defaults.conduitLocalBaseUrl
+  _ <- concurrently (if serverOnly then return () else runTUI baseUrl dark)
+                    (if ext then return () else runServer baseUrl)
   return ()
 
-runTUI :: Env -> Bool -> IO ()
-runTUI env dark = do
-  _ <- defaultMain tui $ initialSt env dark
+runTUI :: BaseUrl -> Bool -> IO ()
+runTUI baseUrl dark = do
+  _ <- defaultMain tui $ initialSt baseUrl dark
   return ()
 
-runServer :: Env -> IO ()
-runServer env = run (requestPort env) app
+runServer :: BaseUrl -> IO ()
+runServer baseUrl = run (baseUrlPort baseUrl) app

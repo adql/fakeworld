@@ -10,9 +10,9 @@ import Brick
 import Brick.Focus (FocusRing)
 import Data.ByteString (ByteString)
 import Data.Text (Text)
+import Servant.Client
 
 import API.Response.Types
-import Env
 
 data Name = MainViewport
 
@@ -32,11 +32,11 @@ data St = St
   , stDarkMode :: Bool
   , stLinks :: [Link]
   , stFocus :: FocusRing Name
-  , stHomeArticleOffset :: ByteString
+  , stHomeArticleOffset :: Int
   , stHomeArticles :: [Article]
   , stArticleCurrent :: Maybe Article
   , stAllTags :: [Text]
-  , stEnv :: Env
+  , stBaseUrl :: BaseUrl
   }
 
 data Page = HomePage

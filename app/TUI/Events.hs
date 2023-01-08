@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module TUI.Events
   ( appEvent
   , mainViewportEvent
@@ -17,14 +16,13 @@ import Brick
 import Brick.Focus (FocusRing)
 import qualified Brick.Focus as F
 import Control.Monad.IO.Class (liftIO)
-import Data.ByteString (ByteString)
 import Data.List (find)
 import Data.Text (Text)
-import qualified Data.Text.Encoding as TE
 import Graphics.Vty.Input.Events (Event(..), Key(..))
+import Network.HTTP.Client.Conduit (newManager)
+import Servant.Client
 
-import API.Request
-import API.Request.Types (ConduitRequest, ConduitResponse, runConduitRequest)
+import qualified API.Request as API
 import API.Response.Types
 import TUI.Common.Links
 import TUI.Types
@@ -68,20 +66,20 @@ mainViewportEvent e = resizeOrQuit e
 
 openHome :: EventM Name St ()
 openHome = do
-  artcls <- getHomeArticles
+  articles' <- getHomeArticles
   tgs <- getAllTags
-  updateLinks $ mkFeedLinks artcls
+  updateLinks $ mkFeedLinks articles'
   modify $ \s -> s { stCurrentPage = HomePage
-                   , stHomeArticles = artcls
+                   , stHomeArticles = articles'
                    , stAllTags = tgs
                    }
 
-openArticle :: ByteString -> EventM Name St ()
+openArticle :: Text -> EventM Name St ()
 openArticle slug = do
-  artcl <- getArticle slug
+  article' <- getArticle slug
   updateLinks []
   modify $ \s -> s { stCurrentPage = ArticlePage
-                   , stArticleCurrent = artcl
+                   , stArticleCurrent = article'
                    }
 
 -- For development
@@ -91,38 +89,39 @@ openNotImplemented = do
   modify $ \s -> s { stCurrentPage = NotImplementedPage }
 
 mkFeedLinks :: [Article] -> [Link]
-mkFeedLinks artcls = flip map artcls $ \artcl ->
-  let slug = articleSlug artcl in
+mkFeedLinks articles' = flip map articles' $ \article' ->
+  let slug = articleSlug article' in
     Link { linkName = LinkName slug
-         , linkHandler = openArticle $ TE.encodeUtf8 slug
-         , linkText = show $ articleTitle artcl
+         , linkHandler = openArticle slug
+         , linkText = show $ articleTitle article'
          }
 
 -- EventM actions to get content
 
 getHomeArticles :: EventM Name St [Article]
 getHomeArticles = do
-  offset <- stHomeArticleOffset <$> get
+  offset <- gets stHomeArticleOffset
   articles' <- request $
-               requestArticleList [("limit", Just "10"),
-                                   ("offset", Just $ offset)]
+               API.listArticles Nothing Nothing Nothing (Just 10) (Just offset)
   return $ either (const []) articles articles'
 
 getAllTags :: EventM Name St [Text]
 getAllTags = do
-  tags' <- request requestTags
-  return $ either (const []) tags tags'
+  allTags <- request API.getTags
+  return $ either (const []) tags allTags
 
-getArticle :: ByteString -> EventM Name St (Maybe Article)
+getArticle :: Text -> EventM Name St (Maybe Article)
 getArticle slug = do
-  artcl <- request $ requestArticle slug
-  return $ either (const Nothing) (Just . article) artcl
+  article' <- request $ API.getArticle slug
+  return $ either (const Nothing) (Just . article) article'
 
-request :: ConduitRequest (ConduitResponse a)
-        -> EventM Name St (ConduitResponse a)
+request :: ClientM a -> EventM Name St (Either ClientError a)
 request rqst = do
-  env <- gets stEnv
-  liftIO $ runConduitRequest env rqst
+  baseUrl' <- gets stBaseUrl
+  liftIO $ do
+    manager' <- newManager
+    runClientM rqst
+      (mkClientEnv manager' baseUrl')
 
 -- Standard layout links and event handler
 
