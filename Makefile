@@ -39,5 +39,8 @@ run-db:
 kill-db:
 	docker rm -f $(DB_CONTAINER_NAME)
 
-.PHONY: run run-external run-server docker-build docker-run run-db kill-db
+run-psql:
+	docker exec -it fakeworld-postgres psql -U postgres
+
+.PHONY: run run-external run-server docker-build docker-run run-db kill-db run-psql
 
