@@ -2,6 +2,7 @@ DB_CONTAINER_NAME=fakeworld-postgres
 DB_DOCKER_IMAGE=postgres:15.1-alpine
 DB_PORT=5432
 DB_POSTGRES_PASSWORD=fakeworld
+DB_SCHEMA_FILE=schema.sql
 DB_VOLUME_NAME=fakeworld-postgres
 
 # Run with local server
@@ -42,5 +43,12 @@ kill-db:
 run-psql:
 	docker exec -it fakeworld-postgres psql -U postgres
 
-.PHONY: run run-external run-server docker-build docker-run run-db kill-db run-psql
+# Run PostgresSQL in a container and (re)setup the database schema
+# (OVERRIDES EXISTING TABLES)
+set-db:
+	make run-db; sleep 1
+	docker cp $(DB_SCHEMA_FILE) $(DB_CONTAINER_NAME):/home/
+	docker exec $(DB_CONTAINER_NAME) psql -U postgres -f home/schema.sql
+
+.PHONY: run run-external run-server docker-build docker-run run-db kill-db run-psql set-db
 
