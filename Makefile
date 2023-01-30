@@ -50,5 +50,13 @@ set-db:
 	docker cp $(DB_SCHEMA_FILE) $(DB_CONTAINER_NAME):/home/
 	docker exec $(DB_CONTAINER_NAME) psql -U postgres -f home/schema.sql
 
-.PHONY: run run-external run-server docker-build docker-run run-db kill-db run-psql set-db
+# (Re)setup database and populate with dummy data (OVERRIDES EXISTING
+# TABLES)
+populate-db:
+	make set-db; sleep 1
+	docker cp db_dummy $(DB_CONTAINER_NAME):/var/lib/postgresql/data/
+	docker cp populate.sql $(DB_CONTAINER_NAME):/home/
+	docker exec $(DB_CONTAINER_NAME) psql -U postgres -f home/populate.sql
+
+.PHONY: run run-external run-server docker-build docker-run run-db kill-db run-psql set-db populate-db
 
