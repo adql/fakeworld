@@ -64,6 +64,10 @@ executable fakeworld
         API.Response.Types
         Env.Defaults
         Server
+        Server.DB
+        Server.DB.Session
+        Server.DB.Statement
+        Server.DB.Types
         Server.DummyDB
         TUI
         TUI.Events
@@ -89,6 +93,7 @@ executable fakeworld
                   , brick ^>=1.5
                   , bytestring ^>=0.11.3.1
                   , hasql ^>=1.6.3
+                  , hasql-th ^>=0.4.0.18
                   , http-conduit ^>=2.3.8
                   , http-types ^>=0.12.3
                   , mtl ^>=2.2.2
@@ -97,6 +102,7 @@ executable fakeworld
                   , servant-server ^>=0.19.2
                   , text ^>=2.0.1
                   , time ^>=1.12.2
+                  , vector ^>=0.13.0.0
                   , vty ^>=5.37
                   , wai ^>=3.2.3
                   , warp ^>=3.3.23

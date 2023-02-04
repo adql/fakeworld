@@ -10,6 +10,7 @@ import Servant
 
 import API.Request.Types
 import API.Response.Types
+import Server.DB
 import Server.DummyDB
 
 server :: Server API
@@ -29,7 +30,7 @@ serveArticles quTagged quByAuthor quFavoritedBy quLimit quOffset =
   dbQueryArticles $ QueryArticles {..}
 
 serveArticle :: Text -> Handler Article'
-serveArticle = dbQueryArticle
+serveArticle = dbGetMaybe . getArticle
 
 serveComments :: Text -> Handler Comments
 serveComments = dbQueryComments
