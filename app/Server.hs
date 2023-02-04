@@ -33,13 +33,13 @@ serveArticle :: Text -> Handler Article'
 serveArticle = dbGetMaybe . getArticle
 
 serveComments :: Text -> Handler Comments
-serveComments = dbQueryComments
+serveComments = dbGet . getComments
 
 serveProfile :: Text -> Handler Profile'
 serveProfile = dbGetMaybe . getProfile
 
 serveTags :: Handler Tags
-serveTags = return dummyTags
+serveTags = dbGet getAllTags
 
 userAPI :: Proxy API
 userAPI = Proxy

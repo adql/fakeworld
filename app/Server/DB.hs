@@ -1,5 +1,6 @@
 module Server.DB
   ( module Server.DB.Session
+  , dbGet
   , dbGetMaybe
   ) where
 
@@ -13,6 +14,9 @@ import qualified Servant.Server as Servant
 
 import Env.Defaults (postgresLocalSettings)
 import Server.DB.Session
+
+dbGet :: Session a -> Handler a
+dbGet = dbQuery
 
 dbGetMaybe :: Session (Maybe a) -> Handler a
 dbGetMaybe session = dbQuery session >>=

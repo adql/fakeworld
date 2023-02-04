@@ -1,5 +1,6 @@
 module Server.DB.Types
   ( ArticleRow
+  , CommentRow
   , ProfileRow
   ) where
 
@@ -12,3 +13,5 @@ type ArticleRow =
   (Text, Text, Text, Text, Vector Text, UTCTime, UTCTime, Bool, Int16, Text, Maybe Text, Maybe Text, Bool)
 
 type ProfileRow = (Text, Maybe Text, Maybe Text, Bool)
+
+type CommentRow = (Int16, UTCTime, UTCTime, Text, Text, Maybe Text, Maybe Text, Bool)

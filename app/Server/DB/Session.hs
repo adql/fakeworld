@@ -1,7 +1,9 @@
 {-# LANGUAGE RecordWildCards #-}
 module Server.DB.Session
   ( getArticle
+  , getComments
   , getProfile
+  , getAllTags
   ) where
 
 import Data.Text (Text)
@@ -37,6 +39,23 @@ rowToArticle ( articleSlug
             , ..
             }
 
+getComments :: Text -> Session Comments
+getComments slug = statement slug S.selectComments >>=
+  return . Comments . map rowToComment . V.toList
+
+rowToComment :: CommentRow -> Comment
+rowToComment ( commentId
+             , commentCreatedAt
+             , commentUpdatedAt
+             , commentBody
+             , profileUsername
+             , profileBio
+             , profileImage
+             , profileFollowing
+             )
+  = Comment { commentId = fromIntegral commentId
+            , commentAuthor = Profile { .. }, .. }
+
 getProfile :: Text -> Session (Maybe Profile')
 getProfile username = statement username S.selectProfile >>=
   return . fmap (Profile' . rowToProfile)
@@ -48,3 +67,7 @@ rowToProfile ( profileUsername
              , profileFollowing
              )
   = Profile { .. }
+
+getAllTags :: Session Tags
+getAllTags = statement () S.selectAllTags >>=
+  return . Tags . V.toList
