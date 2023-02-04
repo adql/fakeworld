@@ -1,6 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 module Server.DB.Session
   ( getArticle
+  , getProfile
   ) where
 
 import Data.Text (Text)
@@ -35,3 +36,15 @@ rowToArticle ( articleSlug
             , articleAuthor = Profile {..}
             , ..
             }
+
+getProfile :: Text -> Session (Maybe Profile')
+getProfile username = statement username S.selectProfile >>=
+  return . fmap (Profile' . rowToProfile)
+
+rowToProfile :: ProfileRow -> Profile
+rowToProfile ( profileUsername
+             , profileBio
+             , profileImage
+             , profileFollowing
+             )
+  = Profile { .. }

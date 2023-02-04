@@ -36,7 +36,7 @@ serveComments :: Text -> Handler Comments
 serveComments = dbQueryComments
 
 serveProfile :: Text -> Handler Profile'
-serveProfile = dbQueryProfile
+serveProfile = dbGetMaybe . getProfile
 
 serveTags :: Handler Tags
 serveTags = return dummyTags
