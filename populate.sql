@@ -7,3 +7,8 @@ COPY article(slug,title,description,body,tag_list,created_at,updated_at,author_i
 FROM 'db_dummy/article.csv'
 DELIMITER ','
 CSV HEADER;
+
+COPY comment(created_at,updated_at,body,author_id,article_id)
+FROM 'db_dummy/comment.csv'
+DELIMITER ','
+CSV HEADER;
