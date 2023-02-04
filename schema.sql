@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS profile, article;
+DROP TABLE IF EXISTS profile, article, comment;
 
 CREATE TABLE profile(
        profile_id SERIAL PRIMARY KEY,
@@ -19,4 +19,17 @@ CREATE TABLE article(
        author_id INT NOT NULL,
        FOREIGN KEY (author_id)
          REFERENCES profile (profile_id)
+);
+
+CREATE TABLE comment(
+       comment_id SERIAL PRIMARY KEY,
+       created_at TIMESTAMP NOT NULL,
+       updated_at TIMESTAMPTZ NOT NULL CHECK (updated_at >= created_at),
+       body TEXT NOT NULL,
+       author_id INT NOT NULL,
+       article_id INT NOT NULL,
+       FOREIGN KEY (author_id)
+         REFERENCES profile (profile_id),
+       FOREIGN KEY (article_id)
+         REFERENCES article (article_id)
 );
