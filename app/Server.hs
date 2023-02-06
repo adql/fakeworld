@@ -11,7 +11,6 @@ import Servant
 import API.Request.Types
 import API.Response.Types
 import Server.DB
-import Server.DummyDB
 
 server :: Server API
 server = serveArticles
@@ -26,8 +25,8 @@ serveArticles :: Maybe Tag
               -> Maybe Int
               -> Maybe Int
               -> Handler Articles
-serveArticles quTagged quByAuthor quFavoritedBy quLimit quOffset =
-  dbQueryArticles $ QueryArticles {..}
+serveArticles tag author favorited limit offset =
+  dbGet $ getArticles (tag, author, favorited) limit offset
 
 serveArticle :: Text -> Handler Article'
 serveArticle = dbGetMaybe . getArticle

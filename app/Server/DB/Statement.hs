@@ -1,6 +1,8 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 module Server.DB.Statement
-  ( selectArticle
+  ( selectArticles
+  , selectArticle
   , selectComments
   , selectProfile
   , selectAllTags
@@ -8,11 +10,56 @@ module Server.DB.Statement
 
 import Data.Text (Text)
 import Data.Vector (Vector)
+import Hasql.Decoders as D
+import Hasql.DynamicStatements.Snippet (param)
+import Hasql.DynamicStatements.Statement
 import Hasql.Statement
 import Hasql.TH
 
 import Server.DB.Types
 
+-- todo: query with composite Postgres data types to reduce
+-- boilerplate
+
+selectArticles :: ArticlesQuery -> Statement () (Vector ArticleRow)
+selectArticles (tag, author, _favorited) =
+  --query by favorited is not yet implemented
+  dynamicallyParameterized snippet decoder True
+  where
+    snippet =
+      "SELECT slug, \
+              \title, \
+              \description, \
+              \body, \
+              \tag_list, \
+              \created_at, \
+              \updated_at, \
+              \false, \
+              \0, \
+              \username, \
+              \bio, \
+              \image, \
+              \false \
+       \FROM article a JOIN profile p \
+         \ON a.author_id = p.profile_id "
+       <> "WHERE true " --ugly way to allow an empty WHERE clause
+         <> foldMap (\x -> "AND " <> param x <> " = ANY (tag_list) ") tag
+         <> foldMap (\x -> "AND username = " <> param x) author
+    decoder = D.rowVector $ (,,,,,,,,,,,,)
+      <$> D.column (D.nonNullable D.text)
+      <*> D.column (D.nonNullable D.text)
+      <*> D.column (D.nonNullable D.text)
+      <*> D.column (D.nonNullable D.text)
+      <*> D.column (D.nonNullable $ D.vectorArray $ D.nonNullable D.text)
+      <*> D.column (D.nonNullable D.timestamptz)
+      <*> D.column (D.nonNullable D.timestamptz)
+      <*> D.column (D.nonNullable D.bool)
+      <*> D.column (D.nonNullable D.int2)
+      <*> D.column (D.nonNullable D.text)
+      <*> D.column (D.nullable D.text)
+      <*> D.column (D.nullable D.text)
+      <*> D.column (D.nonNullable D.bool)
+      
 selectArticle :: Statement Text (Maybe ArticleRow)
 selectArticle = --favorited, favoritesCount and (profile) following not yet implemented
   [maybeStatement|

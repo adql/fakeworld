@@ -93,6 +93,7 @@ executable fakeworld
                   , brick ^>=1.5
                   , bytestring ^>=0.11.3.1
                   , hasql ^>=1.6.3
+                  , hasql-dynamic-statements ^>=0.3.1.2
                   , hasql-th ^>=0.4.0.18
                   , http-conduit ^>=2.3.8
                   , http-types ^>=0.12.3

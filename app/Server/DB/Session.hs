@@ -1,6 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 module Server.DB.Session
-  ( getArticle
+  ( getArticles
+  , getArticle
   , getComments
   , getProfile
   , getAllTags
@@ -13,6 +14,16 @@ import Hasql.Session
 import API.Response.Types
 import qualified Server.DB.Statement as S
 import Server.DB.Types
+
+getArticles :: ArticlesQuery -> Maybe Int -> Maybe Int -> Session Articles
+getArticles query limit' offset' = do
+  result <- statement () (S.selectArticles query)
+  let limit  = maybe 20 id limit'
+      offset = maybe 0 id offset'
+      slice  = V.take limit $ V.drop offset result
+  return $ Articles
+    (map rowToArticle $ V.toList slice)
+    (V.length result)
 
 getArticle :: Text -> Session (Maybe Article')
 getArticle slug = statement slug S.selectArticle >>=

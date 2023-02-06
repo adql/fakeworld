@@ -2,6 +2,7 @@ module Server.DB.Types
   ( ArticleRow
   , CommentRow
   , ProfileRow
+  , ArticlesQuery
   ) where
 
 import Data.Text (Text)
@@ -15,3 +16,7 @@ type ArticleRow =
 type ProfileRow = (Text, Maybe Text, Maybe Text, Bool)
 
 type CommentRow = (Int16, UTCTime, UTCTime, Text, Text, Maybe Text, Maybe Text, Bool)
+
+-- only includes tag, author and favorited; limit and offset performed
+-- on the resulting vector in the Session
+type ArticlesQuery = (Maybe Text, Maybe Text, Maybe Text)
