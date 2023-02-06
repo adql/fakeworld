@@ -20,8 +20,6 @@ The project utilizes the following technologies and libraries:
   generating, serving (via _wai_) and requesting the API
 - [PostgreSQL](https://www.postgresql.org/) as database, using
   [Hasql](https://github.com/nikita-volkov/hasql/) on the Haskell side
-  (in development in branch
-  [postgres](https://github.com/adql/fakeworld/tree/postgres))
 - [Aeson](https://github.com/haskell/aeson/) for all JSON heavy-lifting
 - [optparse-applicative](https://github.com/pcapriotti/optparse-applicative)
   for command line parsing
