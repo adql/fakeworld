@@ -10,7 +10,7 @@ import Servant
 
 import API.Request.Types
 import API.Response.Types
-import Server.DummyDB
+import Server.DB
 
 server :: Server API
 server = serveArticles
@@ -25,20 +25,20 @@ serveArticles :: Maybe Tag
               -> Maybe Int
               -> Maybe Int
               -> Handler Articles
-serveArticles quTagged quByAuthor quFavoritedBy quLimit quOffset =
-  dbQueryArticles $ QueryArticles {..}
+serveArticles tag author favorited limit offset =
+  dbGet $ getArticles (tag, author, favorited) limit offset
 
 serveArticle :: Text -> Handler Article'
-serveArticle = dbQueryArticle
+serveArticle = dbGetMaybe . getArticle
 
 serveComments :: Text -> Handler Comments
-serveComments = dbQueryComments
+serveComments = dbGet . getComments
 
 serveProfile :: Text -> Handler Profile'
-serveProfile = dbQueryProfile
+serveProfile = dbGetMaybe . getProfile
 
 serveTags :: Handler Tags
-serveTags = return dummyTags
+serveTags = dbGet getAllTags
 
 userAPI :: Proxy API
 userAPI = Proxy
