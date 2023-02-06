@@ -68,7 +68,6 @@ executable fakeworld
         Server.DB.Session
         Server.DB.Statement
         Server.DB.Types
-        Server.DummyDB
         TUI
         TUI.Events
         TUI.Common
