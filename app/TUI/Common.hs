@@ -1,7 +1,9 @@
+{-# LANGUAGE OverloadedStrings #-}
 module TUI.Common
   ( articleTags
   , authorBox
   , separator
+  , paragraphs
   ) where
 
 import Brick
@@ -10,6 +12,7 @@ import Brick.Widgets.Border.Style (unicodeRounded)
 import Data.Function ((&))
 import Data.List (intersperse)
 import Data.Text (Text)
+import qualified Data.Text as T
 import Data.Time.Clock (UTCTime)
 import Data.Time.Format (formatTime, defaultTimeLocale)
 
@@ -37,3 +40,9 @@ separator =
   withAttr separatorAttr $
   vLimit 1 (fill '_') &
   padBottom (Pad 1)
+
+-- Parse `\n`; each simply creates a new widget in a vertical box
+paragraphs :: Text -> Widget Name
+paragraphs = vBox . map par . T.lines
+  where
+    par text = if text == "" then txt " " else txtWrap text

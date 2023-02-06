@@ -8,6 +8,7 @@ import Brick
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.Maybe (fromJust)
+import qualified Data.Text as T
 
 import API.Response.Types
 import TUI.Common
@@ -40,7 +41,7 @@ content st@(St { stArticleCurrent }) =
   let artcl = unsafeGetArticle stArticleCurrent
   in
     limitWidthAndCenter bodyWidth $
-    vBox [ (txtWrap $ articleBody artcl) & padBottom (Pad 2)
+    vBox [ (paragraphs $ articleBody artcl) & padBottom (Pad 2)
          , (articleTags $ articleTagList artcl) & padBottom (Pad 1)
          , separator & padBottom (Pad 1)
          , C.hCenter $ authorBox (profileUsername $ articleAuthor artcl) (articleCreatedAt artcl)
