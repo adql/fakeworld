@@ -111,7 +111,7 @@ dummyArticle1 = Article
                 "How-to-do-dummy-stuff"
                 "How to do dummy stuff"
                 "Useless dummy information"
-                "Lorem ipsum dummy ipsum dummy"
+                "Lorem ipsum dummy ipsum dummy\n\nMore lorem ipsum..."
                 [ tags dummyTags !! 0 ]
                 dummyTime
                 dummyTime
