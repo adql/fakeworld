@@ -4,6 +4,11 @@ _FakeWorld_ is a full-stack implementation of the
 [RealWorld](https://github.com/gothinkster/realworld) demo Medium.com
 clone, but with a twist: the "front-end" is instead a _TUI_ mock-up!
 
+<figure>
+    ![FakeWorld animated screenshot](https://user-images.githubusercontent.com/6893125/217037860-b4ba632e-4878-49c0-836c-86ed91a1a185.gif)
+    <figcaption>FakeWorld running on RealWorld's demo API</figcaption>
+</figure>
+
 ### Why? ###
 
 - Because I can
