@@ -53,3 +53,38 @@ In the first stage only content that doesn't require authentication is implement
     - [x] Get an article / its comments by slug
     - [x] Get a profile by username
     - [x] Get all tags
+
+## Running ##
+
+These instructions are for Linux. Most of the code in the `Makefile` is trivial and should be easily adaptable to MacOS and (maybe not quite easily) to Windows.
+
+Haskell development environment needs to be installed. The common and simple way is using GHCup ([installation instructions](https://www.haskell.org/ghcup/)). _FakeWorld_ uses Cabal.
+
+After having installed GHCup install the necessary toolchain:
+
+``` shell
+ghcup install ghc
+ghcup install cabal latest
+```
+
+Run the app's TUI frontend on the external demo backend with:
+
+``` shell
+make run-external
+```
+
+Make sure you're on a normal terminal! Running from within e.g. Emacs will not work.
+
+### Full-Stack ###
+
+The PostgreSQL database is run on a Docker container, so make sure you have [Docker installed](https://docs.docker.com/get-docker/) in your path. Then initiate the database with some dummy data:
+
+``` shell
+make populate-db
+```
+
+This will start a Docker container with the database (with a persistent volume named `fakeworld-postgres`, create tables and populate them with some Lorem Ipsums. You can then run the app full-stack from a terminal with
+
+``` shell
+make run
+```
