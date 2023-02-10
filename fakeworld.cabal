@@ -63,6 +63,7 @@ executable fakeworld
         API.Request.Types
         API.Response.Types
         Env.Defaults
+        Options
         Server
         Server.DB
         Server.DB.Session
@@ -91,6 +92,7 @@ executable fakeworld
                   , base ^>=4.16.3.0
                   , brick ^>=1.5
                   , bytestring ^>=0.11.3.1
+                  , dotenv ^>=0.10.0.0
                   , hasql ^>=1.6.3
                   , hasql-dynamic-statements ^>=0.3.1.2
                   , hasql-th ^>=0.4.0.18
