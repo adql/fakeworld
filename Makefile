@@ -41,7 +41,7 @@ run-psql:
 # Run PostgresSQL in a container and (re)setup the database schema
 # (OVERRIDES EXISTING TABLES)
 set-db:
-	make run-db; sleep 1
+	make run-db; sleep 3
 	docker cp $(DB_SCHEMA_FILE) $(DB_CONTAINER_NAME):/home/
 	docker exec $(DB_CONTAINER_NAME) psql -U postgres -f home/schema.sql
 
