@@ -12,7 +12,7 @@ import qualified Hasql.Session as Hasql (run)
 import Servant.Server (Handler)
 import qualified Servant.Server as Servant
 
-import Env.Defaults (postgresLocalSettings)
+import Env (postgresSettings)
 import Server.DB.Session
 
 dbGet :: Session a -> Handler a
@@ -24,7 +24,7 @@ dbGetMaybe session = dbQuery session >>=
 
 dbQuery :: Session a -> Handler a
 dbQuery session = do
-  connection' <- liftIO (Hasql.acquire postgresLocalSettings)
+  connection' <- liftIO $ Hasql.acquire =<< postgresSettings
   case connection' of
     Left _cError -> throwError Servant.err500
     Right connection -> do

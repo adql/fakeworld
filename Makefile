@@ -35,7 +35,7 @@ run-db:
 	docker ps | grep $(DB_CONTAINER_NAME) || \
 	docker run \
 	--name $(DB_CONTAINER_NAME) \
-	-e POSTGRES_PASSWORD=$(DB_POSTGRES_PASSWORD) \
+	-e POSTGRES_PASSWORD=$(DB_PASSWORD) \
 	-v $(DB_VOLUME_NAME):/var/lib/postgresql/data \
 	-p $(DB_PORT):5432 \
 	-d \
