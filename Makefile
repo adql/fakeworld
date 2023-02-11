@@ -1,5 +1,14 @@
 include .env.defaults
 
+# Verify that all environment variables are set
+testenv := $(shell cabal exec dotenv -- -f .env --example .env.example echo 0)
+ifeq ($(testenv),0)
+	include .env
+	export
+else
+	echo $(testenv); exit 1
+endif
+
 # Run with local server
 run:
 	make run-db && cabal run

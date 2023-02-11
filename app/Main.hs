@@ -7,6 +7,7 @@ import Network.Wai.Handler.Warp
 import Options.Applicative (execParser,)
 import Servant.Client (BaseUrl, baseUrlPort)
 
+import Env
 import qualified Env.Defaults
 import Options
 import Server
@@ -14,6 +15,7 @@ import TUI
 
 main :: IO ()
 main = do
+  loadEnv
   options <- execParser opts
   runApp options
 

@@ -62,6 +62,7 @@ executable fakeworld
         API.Request
         API.Request.Types
         API.Response.Types
+        Env
         Env.Defaults
         Options
         Server
