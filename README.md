@@ -56,8 +56,6 @@ In the first stage only content that doesn't require authentication is implement
 
 ## Running ##
 
-These instructions are for Linux. Most of the code in the `Makefile` is trivial and should be easily adaptable to MacOS and (maybe not quite easily) to Windows.
-
 Haskell development environment needs to be installed. The common and simple way is using GHCup ([installation instructions](https://www.haskell.org/ghcup/)). _FakeWorld_ uses Cabal.
 
 After having installed GHCup install the necessary toolchain:
@@ -67,23 +65,31 @@ ghcup install ghc
 ghcup install cabal latest
 ```
 
-Run the app's TUI frontend on the external demo backend with:
+### Just the TUI frontend
+
+Use cabal and pass the `-e` (i.e. `--external`) argument to run the TUI frontend on the demo backend, set by default to `https://api.realworld.io:443`:
 
 ``` shell
-make run-external
+cabal run fakeworld -- -e
 ```
 
 Make sure you're on a normal terminal! Running from within e.g. Emacs will not work.
 
 ### Full-Stack ###
 
-The PostgreSQL database is run on a Docker container, so make sure you have [Docker installed](https://docs.docker.com/get-docker/) in your path. Then initiate the database with some dummy data:
+These instructions are for Linux. Most of the code in the `Makefile` is trivial and should be easily adaptable to MacOS and (maybe not quite easily) to Windows.
+
+The PostgreSQL database is run on a Docker container, so make sure you have [Docker installed](https://docs.docker.com/get-docker/) in your path.
+
+**Important**: You must provide a password to the Postgres database with the `DB_PASSWORD` environment variable using a `.env` file. Otherwise the scripts in the `Makefile` fail.
+
+initiate the database with some dummy data:
 
 ``` shell
 make populate-db
 ```
 
-This will start a Docker container with the database (with a persistent volume named `fakeworld-postgres`, create tables and populate them with some Lorem Ipsums. You can then run the app full-stack from a terminal with
+This will start a Docker container for the database (with a persistent volume named `fakeworld-postgres`), create tables and populate them with some Lorem Ipsums. You can then run the app full-stack from a terminal with
 
 ``` shell
 make run
