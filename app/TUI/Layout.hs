@@ -4,12 +4,15 @@ module TUI.Layout
   , bodyWidth
   , commentSectionWidth
   , footer
+  , hWrap
   ) where
 
 import Brick
 import qualified Brick.Widgets.Center as C
+import Data.Foldable (foldlM)
 import Data.Function ((&))
 import Data.List (intersperse)
+import Graphics.Vty.Image (imageWidth)
 
 import TUI.Common.Links
 import TUI.Events
@@ -55,3 +58,23 @@ bodyWidth,
   :: Int
 bodyWidth = 120
 commentSectionWidth = bodyWidth * 2 `div` 3
+
+-- Similar to txtWrap, but for widgets, and with additional gap
+-- arguments; too long tags are cropped
+hWrap :: Int -> Int -> [Widget n] -> Widget n
+hWrap hGap vGap widgets = Widget Fixed Fixed $ do
+  avlWdth0 <- availWidth <$> getContext
+  let wrap (rows,wdgts,avlWdth) widget = do
+        len <- imageWidth . image <$> render widget
+        if null wdgts || len <= avlWdth
+          then return (rows, widget:wdgts, avlWdth-len-hGap)
+          else wrap ((mkRow wdgts):rows, [], avlWdth0) widget
+  (rows',wdgts,_) <- foldlM wrap ([],[],avlWdth0) widgets
+  let rows = intersperse (vLimit vGap $ fill ' ')
+             $ (mkRow wdgts) : rows' --foldlM returns without adding
+                                     --last row
+  render $
+    setAvailableSize (avlWdth0, length rows) $ vBox (reverse rows)
+  where
+    mkRow wdgts = hBox $ intersperse (hLimit hGap $ fill ' ')
+                  (reverse wdgts)

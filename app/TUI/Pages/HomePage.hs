@@ -8,7 +8,6 @@ import Brick
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.List (intersperse)
-import qualified Data.Text as T
 
 import API.Response.Types
 
@@ -75,6 +74,4 @@ popularTags allTags =
   ( str "Popular Tags" &
     padBottom (Pad 1) )
   <=>
-  -- Currently ugly running text since there's no trivial way to wrap
-  -- an hBox -- https://github.com/jtdaugherty/brick/issues/400
-  (txtWrap . T.concat . intersperse "  ") allTags
+  hWrap 2 1 (txt <$> allTags)
