@@ -20,26 +20,24 @@ module TUI.Style
   ) where
 
 import Brick
-import Data.Word (Word8)
 import Graphics.Vty.Attributes
 
 theMap :: Bool -> AttrMap
 theMap dark =
   let def = if dark then brightWhite `on` black
             else black `on` brightWhite
-      footerBg = if dark then RGBColor 15 15 15 else RGBColor 243 243 243
+      footerBg = if dark then gray 0x10 else gray 0xF3
   in
     attrMap def
     [ -- general attributes
       (attrName "conduitGreen", fg conduitGreen)
-    , (attrName "pale9" , pale 9 )
-    , (attrName "pale10", pale 10)
-    , (attrName "pale11", pale 11)
-    , (attrName "pale13", pale 13)
-    , (attrName "pale14", pale 14)
-
+    , (attrName "pale99", pale 0x99)    
+    , (attrName "paleAA", pale 0xAA)
+    , (attrName "paleBB", pale 0xBB)
+    , (attrName "paleDD", pale 0xDD)
+    
     -- element attributes
-    , (articlePageBannerAttr, brightWhite `on` (RGBColor 51 51 51))
+    , (articlePageBannerAttr, brightWhite `on` gray 0x33)
     , (articlePageBannerAuthorNameAttr, fg brightWhite)
     , (conduitAttr, style bold)
     , (footerAttr, bg footerBg)
@@ -66,27 +64,28 @@ articlePageBannerAttr,
   :: AttrName
 articlePageBannerAttr = attrName "articleBanner"
 articlePageBannerAuthorNameAttr = attrName "articlePageBannerAuthorName"
-articleTagsAttr = attrName "pale10" <> attrName "articleTags"
-articleTagsBorderAttr = attrName "pale13" <> attrName "articleTagsBorder"
+articleTagsAttr = attrName "paleAA" <> attrName "articleTags"
+articleTagsBorderAttr = attrName "paleDD" <> attrName "articleTagsBorder"
 authorBoxNameAttr = attrName "conduitGreen" <> attrName "aurhorBoxName"
-authorBoxTimeAttr = attrName "pale11" <> attrName "authorBoxTime"
+authorBoxTimeAttr = attrName "paleBB" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
-footerAttr = attrName "pale11" <> attrName "footer"
+footerAttr = attrName "paleBB" <> attrName "footer"
 homepageBannerAttr = attrName "homepageBanner"
 linkAttr = attrName "conduitGreen" <> attrName "link"
 linkFocusedAttr = linkAttr <> attrName "linkFocused"
-previewDescAttr = attrName "pale9" <> attrName "previewDesc"
-previewFooterAttr = attrName "pale11" <> attrName "previewFooter"
+previewDescAttr = attrName "pale99" <> attrName "previewDesc"
+previewFooterAttr = attrName "paleBB" <> attrName "previewFooter"
 previewTitleAttr = attrName "previewTitle"
-separatorAttr = attrName "pale13" <> attrName "feedSep"
+separatorAttr = attrName "paleDD" <> attrName "feedSep"
 
 style :: Style -> Attr
 style = withStyle defAttr
 
-conduitGreen :: Color
-conduitGreen = RGBColor 92 184 92
+pale :: Int -> Attr
+pale = fg . gray
 
-pale :: Word8 -> Attr
-pale c = fg $ RGBColor c' c' c'
-  where
-    c' = c * 17
+conduitGreen :: Color
+conduitGreen = linearColor 92 184 (92::Int)
+
+gray :: Int -> Color
+gray v = linearColor v v v
