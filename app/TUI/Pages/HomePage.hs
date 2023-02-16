@@ -70,8 +70,12 @@ likeBox = emptyWidget
 -- todo: styling (after better structuring Style.hs)
 popularTags :: [Tag] -> Widget Name
 popularTags allTags =
-  padLeft (Pad 1) $
+  withAttr tagBoxBgAttr $
+  padTopBottom 1 $
+  padLeftRight 1 $
   ( str "Popular Tags" &
     padBottom (Pad 1) )
   <=>
-  hWrap 2 1 (txt <$> allTags)
+  hWrap 2 1 tagWidgets
+  where
+    tagWidgets = withAttr tagBoxTagAttr . txt <$> allTags

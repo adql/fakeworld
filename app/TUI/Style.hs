@@ -17,6 +17,8 @@ module TUI.Style
   , previewFooterAttr
   , previewTitleAttr
   , separatorAttr
+  , tagBoxBgAttr
+  , tagBoxTagAttr
   ) where
 
 import Brick
@@ -44,6 +46,8 @@ theMap dark =
     , (homepageBannerAttr, brightWhite `on` conduitGreen)
     , (linkFocusedAttr, currentAttr `withStyle` standout)
     , (previewTitleAttr, style bold)
+    , (tagBoxBgAttr, bg $ gray 0xF3)
+    , (tagBoxTagAttr, brightWhite `on` linearColor 0x68 0x80 (0x77::Int))
     ]
 
 articlePageBannerAttr,
@@ -60,7 +64,9 @@ articlePageBannerAttr,
   previewDescAttr,
   previewFooterAttr,
   previewTitleAttr,
-  separatorAttr
+  separatorAttr,
+  tagBoxBgAttr,
+  tagBoxTagAttr
   :: AttrName
 articlePageBannerAttr = attrName "articleBanner"
 articlePageBannerAuthorNameAttr = attrName "articlePageBannerAuthorName"
@@ -77,6 +83,8 @@ previewDescAttr = attrName "pale99" <> attrName "previewDesc"
 previewFooterAttr = attrName "paleBB" <> attrName "previewFooter"
 previewTitleAttr = attrName "previewTitle"
 separatorAttr = attrName "paleDD" <> attrName "feedSep"
+tagBoxBgAttr = attrName "tagBoxBg"
+tagBoxTagAttr = attrName "tagBoxTax"
 
 style :: Style -> Attr
 style = withStyle defAttr
