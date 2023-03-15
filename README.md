@@ -6,7 +6,7 @@ clone, but with a twist: the "front-end" is instead a _TUI_ mock-up!
 
 Here it is running on _RealWorld_'s demo API:
 
-![FakeWorld animated screenshot](https://user-images.githubusercontent.com/6893125/217037860-b4ba632e-4878-49c0-836c-86ed91a1a185.gif)
+![FakeWorld animated screenshot](https://user-images.githubusercontent.com/6893125/225292039-950ce15c-a4ea-4b48-af3e-d68546652e48.gif)
 
 It shows the main page and an article (the problem with newlines showing as `\n` is on the demo API's side). [See below](#status) for development status information.
 
