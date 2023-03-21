@@ -33,6 +33,7 @@ data St = St
   , stFocus :: FocusRing Name
   , stHomeArticleOffset :: Int
   , stHomeArticles :: [Article]
+  , stHomeTag :: Maybe Tag
   , stArticleCurrent :: Maybe Article
   , stAllTags :: [Text]
   , stBaseUrl :: BaseUrl

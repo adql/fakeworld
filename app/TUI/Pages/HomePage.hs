@@ -8,6 +8,7 @@ import Brick
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.List (intersperse)
+import Data.Text (Text, cons)
 
 import API.Response.Types
 
@@ -36,10 +37,33 @@ content st =
 
 feed :: St -> Widget Name
 feed st =
-  padRight (Pad 1) $
-  vBox $ intersperse separator $
-  articlePreview st <$> stHomeArticles st
+  padRight (Pad 1) $ padTop (Pad 1) $
+  nav st
+  <=>
+  vBox ( intersperse separator $
+         articlePreview st <$> stHomeArticles st )
   
+nav :: St -> Widget Name
+nav st = let tag = (cons '#') <$> stHomeTag st in
+  hBox $ [ navItem (maybe True (const False) tag) "Global Feed"
+         , maybe emptyWidget (navItem True) tag
+         , padTop (Pad 1) separator
+         ]
+
+navItem :: Bool -> Text -> Widget Name
+navItem current title =
+  let itemAttr = if current then feedNavItemCurrentAttr
+                 else feedNavItemAttr
+      borderBottom = if current
+        then overrideAttr separatorAttr feedNavItemCurrentBorderAttr separator
+        else separator
+      width = textWidth title + 2
+  in
+    hLimit width $
+    C.hCenter ( withAttr itemAttr $ txt title )
+    <=>
+    borderBottom
+
 articlePreview :: St -> Article -> Widget Name
 articlePreview st article =
   articlePreviewHeader article

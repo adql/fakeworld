@@ -11,6 +11,9 @@ module TUI.Style
   , conduitAttr
   , footerAttr
   , homepageBannerAttr
+  , feedNavItemAttr
+  , feedNavItemCurrentAttr
+  , feedNavItemCurrentBorderAttr
   , linkAttr
   , linkFocusedAttr
   , previewDescAttr
@@ -44,6 +47,7 @@ theMap dark =
     , (conduitAttr, style bold)
     , (footerAttr, bg footerBg)
     , (homepageBannerAttr, brightWhite `on` conduitGreen)
+    , (feedNavItemCurrentBorderAttr, style bold)
     , (linkFocusedAttr, currentAttr `withStyle` standout)
     , (previewTitleAttr, style bold)
     , (tagBoxBgAttr, bg $ gray 0xF3)
@@ -59,6 +63,9 @@ articlePageBannerAttr,
   conduitAttr,
   footerAttr,
   homepageBannerAttr,
+  feedNavItemAttr,
+  feedNavItemCurrentAttr,
+  feedNavItemCurrentBorderAttr,
   linkAttr,
   linkFocusedAttr,
   previewDescAttr,
@@ -77,6 +84,11 @@ authorBoxTimeAttr = attrName "paleBB" <> attrName "authorBoxTime"
 conduitAttr = attrName "conduitGreen" <> attrName "conduitAttr"
 footerAttr = attrName "paleBB" <> attrName "footer"
 homepageBannerAttr = attrName "homepageBanner"
+feedNavItemAttr = attrName "paleAA" <> attrName "feedNavItem"
+feedNavItemCurrentAttr = attrName "conduitGreen" <>
+                         attrName "feedNavItemCurrent"
+feedNavItemCurrentBorderAttr = feedNavItemCurrentAttr <>
+                               attrName "feedNavItemCurrentBorder"
 linkAttr = attrName "conduitGreen" <> attrName "link"
 linkFocusedAttr = linkAttr <> attrName "linkFocused"
 previewDescAttr = attrName "pale99" <> attrName "previewDesc"

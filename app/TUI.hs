@@ -21,6 +21,7 @@ initialSt baseUrl dark =
      , stFocus = F.focusRing []
      , stHomeArticleOffset = 0
      , stHomeArticles = []
+     , stHomeTag = Nothing
      , stArticleCurrent = Nothing
      , stAllTags = []
      , stBaseUrl = baseUrl
