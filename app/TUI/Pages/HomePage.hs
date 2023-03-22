@@ -41,10 +41,10 @@ feed st =
   nav st
   <=>
   vBox ( intersperse separator $
-         articlePreview st <$> stHomeArticles st )
+         articlePreview st <$> stArticles st )
   
 nav :: St -> Widget Name
-nav st = let tag = (cons '#') <$> stHomeTag st in
+nav st = let tag = (cons '#') <$> stFilterTag st in
   hBox $ [ navItem (maybe True (const False) tag) "Global Feed"
          , maybe emptyWidget (navItem True) tag
          , padTop (Pad 1) separator

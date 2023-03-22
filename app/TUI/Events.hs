@@ -70,7 +70,7 @@ openHome = do
   tgs <- getAllTags
   updateLinks $ mkFeedLinks articles'
   modify $ \s -> s { stCurrentPage = HomePage
-                   , stHomeArticles = articles'
+                   , stArticles = articles'
                    , stAllTags = tgs
                    }
 
@@ -100,7 +100,7 @@ mkFeedLinks articles' = flip map articles' $ \article' ->
 
 getHomeArticles :: EventM Name St [Article]
 getHomeArticles = do
-  offset <- gets stHomeArticleOffset
+  offset <- gets stFilterOffset
   articles' <- request $
                API.listArticles Nothing Nothing Nothing (Just 10) (Just offset)
   return $ either (const []) articles articles'

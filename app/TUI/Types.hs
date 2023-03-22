@@ -31,9 +31,9 @@ data St = St
   , stDarkMode :: Bool
   , stLinks :: [Link]
   , stFocus :: FocusRing Name
-  , stHomeArticleOffset :: Int
-  , stHomeArticles :: [Article]
-  , stHomeTag :: Maybe Tag
+  , stArticles :: [Article]
+  , stFilterOffset :: Int
+  , stFilterTag :: Maybe Tag
   , stArticleCurrent :: Maybe Article
   , stAllTags :: [Text]
   , stBaseUrl :: BaseUrl
