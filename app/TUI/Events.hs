@@ -2,7 +2,8 @@ module TUI.Events
   ( appEvent
   , mainViewportEvent
   , openArticle
-  , openHome
+  , openHomeGlobal
+  , openHomeTag
   , openNotImplemented
 
   , footerConduitLink
@@ -64,6 +65,12 @@ mainViewportEvent e@(VtyEvent ve) = case ve of
     vp = viewportScroll MainViewport
 mainViewportEvent e = resizeOrQuit e
 
+openHomeGlobal :: EventM Name St ()
+openHomeGlobal = filterReset >> openHome
+
+openHomeTag :: Tag -> EventM Name St ()
+openHomeTag tag = filterApplyTag tag >> openHome
+
 openHome :: EventM Name St ()
 openHome = do
   articles' <- getHomeArticles
@@ -96,13 +103,30 @@ mkFeedLinks articles' = flip map articles' $ \article' ->
          , linkText = show $ articleTitle article'
          }
 
+filterApplyTag :: Tag -> EventM Name St ()
+filterApplyTag tag = filterApply (Just tag) Nothing Nothing Nothing
+
+filterReset :: EventM Name St ()
+filterReset = filterApply Nothing Nothing Nothing Nothing
+
+filterApply :: Maybe Tag ->
+               Maybe Text -> --to be implemented
+               Maybe Text -> --to be implemented
+               Maybe Int ->
+               EventM Name St ()
+filterApply tag _author _user offset =
+  modify $ \s -> s { stFilterOffset = maybe 0 id offset
+                   , stFilterTag = tag
+                   }
+
 -- EventM actions to get content
 
 getHomeArticles :: EventM Name St [Article]
 getHomeArticles = do
   offset <- gets stFilterOffset
+  tag <- gets stFilterTag
   articles' <- request $
-               API.listArticles Nothing Nothing Nothing (Just 10) (Just offset)
+               API.listArticles tag Nothing Nothing (Just 10) (Just offset)
   return $ either (const []) articles articles'
 
 getAllTags :: EventM Name St [Text]
@@ -142,8 +166,8 @@ footerConduitLink,
   navSignInLink,
   navSignUpLink
   :: Link
-footerConduitLink = Link FooterConduit openHome "conduit"
-navConduitLink = Link NavConduit openHome "conduit"
-navHomeLink = Link NavHome openHome "Home"
+footerConduitLink = Link FooterConduit openHomeGlobal "conduit"
+navConduitLink = Link NavConduit openHomeGlobal "conduit"
+navHomeLink = Link NavHome openHomeGlobal "Home"
 navSignInLink = Link NavSignIn openNotImplemented "Sign in"
 navSignUpLink = Link NavSignUp openNotImplemented "Sign up"

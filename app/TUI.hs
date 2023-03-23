@@ -36,4 +36,4 @@ tui = App { appDraw = \st -> [mainViewport st $ serveMainWidget st]
           }
 
 initiateApp :: EventM Name St ()
-initiateApp = openHome
+initiateApp = openHomeGlobal
