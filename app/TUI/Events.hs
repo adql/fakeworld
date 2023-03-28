@@ -90,11 +90,9 @@ openNotImplemented = do
   modify $ \s -> s { stCurrentPage = NotImplementedPage }
 
 mkFeedLinks :: [Article] -> [Link]
-mkFeedLinks articles' = flip map articles' $ \article' ->
+mkFeedLinks = map $ \article' ->
   let slug = articleSlug article' in
-    Link { linkName = LinkName slug
-         , linkHandler = openArticle slug
-         }
+    Link (LinkName slug) (openArticle slug)
 
 filterApplyTag :: Tag -> EventM Name St ()
 filterApplyTag tag = filterApply (Just tag) Nothing Nothing Nothing
