@@ -5,12 +5,6 @@ module TUI.Events
   , openHomeGlobal
   , openHomeTag
   , openNotImplemented
-
-  , footerConduitLink
-  , navConduitLink
-  , navHomeLink
-  , navSignInLink
-  , navSignUpLink
   ) where
 
 import Brick
@@ -100,7 +94,6 @@ mkFeedLinks articles' = flip map articles' $ \article' ->
   let slug = articleSlug article' in
     Link { linkName = LinkName slug
          , linkHandler = openArticle slug
-         , linkText = show $ articleTitle article'
          }
 
 filterApplyTag :: Tag -> EventM Name St ()
@@ -166,8 +159,8 @@ footerConduitLink,
   navSignInLink,
   navSignUpLink
   :: Link
-footerConduitLink = Link FooterConduit openHomeGlobal "conduit"
-navConduitLink = Link NavConduit openHomeGlobal "conduit"
-navHomeLink = Link NavHome openHomeGlobal "Home"
-navSignInLink = Link NavSignIn openNotImplemented "Sign in"
-navSignUpLink = Link NavSignUp openNotImplemented "Sign up"
+footerConduitLink = Link FooterConduit openHomeGlobal
+navConduitLink = Link NavConduit openHomeGlobal
+navHomeLink = Link NavHome openHomeGlobal
+navSignInLink = Link NavSignIn openNotImplemented
+navSignUpLink = Link NavSignUp openNotImplemented

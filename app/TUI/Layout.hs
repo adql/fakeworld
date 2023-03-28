@@ -15,7 +15,6 @@ import Data.List (intersperse)
 import Graphics.Vty.Image (imageWidth)
 
 import TUI.Common.Links
-import TUI.Events
 import TUI.Style
 import TUI.Types
 
@@ -36,18 +35,20 @@ navigation :: St -> Widget Name
 navigation st =
   padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
-  (conduit st navConduitLink & padRight Max) <+>
-  (hBox . intersperse (str "   ") . map (link st)) [ navHomeLink
-                                                   , navSignInLink
-                                                   , navSignUpLink
-                                                   ]
+  (linkConduit st NavConduit & padRight Max) <+>
+  (hBox . intersperse (str "   ") . map link') [ (NavHome, str "Home")
+                                               , (NavSignIn, str "Sign in")
+                                               , (NavSignUp, str "Sign up")
+                                               ]
+  where
+    link' = uncurry $ link st
 
 footer :: St -> Widget Name
 footer st =
   withDefAttr footerAttr $
   padTopBottom 1 $
   limitWidthAndCenter bodyWidth $
-  conduit st footerConduitLink <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
+  linkConduit st FooterConduit <+> str "  An interactive learning project from Thinkster. Code & design licensed under MIT. Implemented by Amir Dekel."
   & padRight Max
 
 limitWidthAndCenter :: Int -> Widget n -> Widget n

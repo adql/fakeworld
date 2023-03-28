@@ -50,7 +50,6 @@ data Page = HomePage
 data Link = Link
   { linkName :: Name
   , linkHandler :: EventM Name St ()
-  , linkText :: String
   }
 
 instance Named Link Name where
