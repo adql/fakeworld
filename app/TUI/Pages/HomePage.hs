@@ -33,7 +33,7 @@ banner =
 content :: St -> Widget Name
 content st =
   limitWidthAndCenter bodyWidth $
-  feed st <+> hLimitPercent 25 (popularTags $ stAllTags st)
+  feed st <+> hLimitPercent 25 (popularTags st)
 
 feed :: St -> Widget Name
 feed st =
@@ -91,8 +91,8 @@ articlePreviewFooter article =
 likeBox :: Widget Name
 likeBox = emptyWidget
 
-popularTags :: [Tag] -> Widget Name
-popularTags allTags =
+popularTags :: St -> Widget Name
+popularTags st =
   withAttr tagBoxBgAttr $
   padTopBottom 1 $
   padLeftRight 1 $
@@ -101,4 +101,7 @@ popularTags allTags =
   <=>
   hWrap 2 1 tagWidgets
   where
-    tagWidgets = withAttr tagBoxTagAttr . txt <$> allTags
+    tagWidgets = withAttr tagBoxTagAttr .
+                 overrideAttr linkAttr tagBoxTagAttr .
+                 (\tag -> link st (LinkName tag) (txt tag))
+                 <$> stAllTags st

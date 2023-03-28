@@ -69,7 +69,7 @@ openHome :: EventM Name St ()
 openHome = do
   articles' <- getHomeArticles
   tgs <- getAllTags
-  updateLinks $ mkFeedLinks articles'
+  updateLinks $ mkTagLinks tgs ++ mkFeedLinks articles'
   modify $ \s -> s { stCurrentPage = HomePage
                    , stArticles = articles'
                    , stAllTags = tgs
@@ -93,6 +93,10 @@ mkFeedLinks :: [Article] -> [Link]
 mkFeedLinks = map $ \article' ->
   let slug = articleSlug article' in
     Link (LinkName slug) (openArticle slug)
+  
+mkTagLinks :: [Tag] -> [Link]
+mkTagLinks = map $ \tag ->
+  Link (LinkName tag) (openHomeTag tag)
 
 filterApplyTag :: Tag -> EventM Name St ()
 filterApplyTag tag = filterApply (Just tag) Nothing Nothing Nothing
