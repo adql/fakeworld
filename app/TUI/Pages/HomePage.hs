@@ -91,7 +91,6 @@ articlePreviewFooter article =
 likeBox :: Widget Name
 likeBox = emptyWidget
 
--- todo: styling (after better structuring Style.hs)
 popularTags :: [Tag] -> Widget Name
 popularTags allTags =
   withAttr tagBoxBgAttr $
