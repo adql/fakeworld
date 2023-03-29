@@ -69,7 +69,12 @@ openHome :: EventM Name St ()
 openHome = do
   articles' <- getHomeArticles
   tgs <- getAllTags
-  updateLinks $ mkTagLinks tgs ++ mkFeedLinks articles'
+  feedNavGlobalFeedLink <- gets mkFeedNavGlobalFeedLink
+  let pageLinks = concat [ feedNavGlobalFeedLink
+                         , mkTagLinks tgs
+                         , mkFeedLinks articles'
+                         ]
+  updateLinks pageLinks
   modify $ \s -> s { stCurrentPage = HomePage
                    , stArticles = articles'
                    , stAllTags = tgs
@@ -94,6 +99,11 @@ mkFeedLinks = map $ \article' ->
   let slug = articleSlug article' in
     Link (LinkName slug) (openArticle slug)
   
+mkFeedNavGlobalFeedLink :: St -> [Link]
+mkFeedNavGlobalFeedLink = maybe []
+                          (\_ -> [Link FeedNavGlobalFeed openHomeGlobal]) .
+                          stFilterTag
+
 mkTagLinks :: [Tag] -> [Link]
 mkTagLinks = map $ \tag ->
   Link (LinkName tag) (openHomeTag tag)

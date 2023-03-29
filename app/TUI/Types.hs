@@ -22,6 +22,8 @@ data Name = MainViewport
           | NavSignUp
           | FooterConduit
 
+          | FeedNavGlobalFeed
+
           | LinkName Text
 
           | NoName --exclusively for linkMaybe

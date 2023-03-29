@@ -45,14 +45,15 @@ feed st =
   
 nav :: St -> Widget Name
 nav st = let tag = (cons '#') <$> stFilterTag st in
-  hBox $ [ navItem (maybe True (const False) tag) "Global Feed"
-         , maybe emptyWidget (navItem True) tag
+  hBox $ [ navItem st (const FeedNavGlobalFeed <$> tag) "Global Feed"
+         , maybe emptyWidget (navItem st Nothing) tag
          , padTop (Pad 1) separator
          ]
 
-navItem :: Bool -> Text -> Widget Name
-navItem current title =
-  let itemAttr = if current then feedNavItemCurrentAttr
+navItem :: St -> Maybe Name -> Text -> Widget Name
+navItem st name title =
+  let current = maybe True (const False) name --current if no link name
+      itemAttr = if current then feedNavItemCurrentAttr
                  else feedNavItemAttr
       borderBottom = if current
         then overrideAttr separatorAttr feedNavItemCurrentBorderAttr separator
@@ -60,7 +61,9 @@ navItem current title =
       width = textWidth title + 2
   in
     hLimit width $
-    C.hCenter ( withAttr itemAttr $ txt title )
+    C.hCenter ( withAttr itemAttr $
+                overrideAttr linkAttr itemAttr $
+                linkMaybe st name $ txt title )
     <=>
     borderBottom
 
