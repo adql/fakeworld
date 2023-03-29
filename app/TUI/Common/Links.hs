@@ -1,5 +1,6 @@
 module TUI.Common.Links
   ( link
+  , linkMaybe
   , linkArticle
   , linkConduit
   , updateStLinks
@@ -23,6 +24,10 @@ link st name w = case getLink name st of
           visibleIfFocused w' = if focused then visible w' else w'
       in
         withAttr attr $ visibleIfFocused w
+
+linkMaybe :: St -> Maybe Name -> Widget Name -> Widget Name
+linkMaybe st name' w = let name = maybe NoName id name' in
+  link st name w
 
 linkConduit :: St -> Name -> Widget Name
 linkConduit st name = overrideAttr linkAttr conduitAttr

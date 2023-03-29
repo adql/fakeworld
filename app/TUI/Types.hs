@@ -23,6 +23,8 @@ data Name = MainViewport
           | FooterConduit
 
           | LinkName Text
+
+          | NoName --exclusively for linkMaybe
           
   deriving (Show, Eq, Ord)
 
