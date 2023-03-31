@@ -4,8 +4,6 @@
 
 module API.Request.Types
   ( API
-  , ListArticles
-  , GetTags
   ) where
 
 import Data.Text
@@ -13,16 +11,17 @@ import Servant
 
 import API.Response.Types
 
-type API = ListArticles
-      :<|> GetArticle
-      :<|> GetComments
-      :<|> GetProfile
-      :<|> GetTags
+type API = APIBase :> (
+             ListArticles
+        :<|> GetArticle
+        :<|> GetComments
+        :<|> GetProfile
+        :<|> GetTags
+             )
 
 type APIBase = "api"
 
-type ListArticles = APIBase
-                 :> "articles"
+type ListArticles = "articles"
                  :> QueryParam "tag" Tag
                  :> QueryParam "author" Text
                  :> QueryParam "favorited" Text
@@ -30,22 +29,18 @@ type ListArticles = APIBase
                  :> QueryParam "offset" Int
                  :> Get '[JSON] Articles
 
-type GetArticle = APIBase
-               :> "articles"
+type GetArticle = "articles"
                :> Capture "slug" Text
                :> Get '[JSON] Article'
 
-type GetComments = APIBase
-                :> "articles"
+type GetComments = "articles"
                 :> Capture "slug" Text
                 :> "comments"
                 :> Get '[JSON] Comments
 
-type GetProfile = APIBase
-               :> "profiles"
+type GetProfile = "profiles"
                :> Capture "username" Text
                :> Get '[JSON] Profile'
 
-type GetTags = APIBase
-            :> "tags"
+type GetTags = "tags"
             :> Get '[JSON] Tags
