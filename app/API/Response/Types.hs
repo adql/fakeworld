@@ -28,10 +28,10 @@ data Profile = Profile
   } deriving (Eq, Generic, Show)
 
 instance FromJSON Profile where
-  parseJSON = genericParseJSON $ withPrefixRemoval 7
+  parseJSON = genericParseJSON $ withPrefixRemoval 7 defaultOptions
               
 instance ToJSON Profile where
-  toEncoding = genericToEncoding $ withPrefixRemoval 7
+  toEncoding = genericToEncoding $ withPrefixRemoval 7 defaultOptions
 
 newtype Profile' = Profile' { profile :: Profile }
   deriving (Eq, Generic, Show)
@@ -50,10 +50,10 @@ data User = User
   } deriving (Eq, Generic, Show)
 
 instance FromJSON User where
-  parseJSON = genericParseJSON $ withPrefixRemoval 4
+  parseJSON = genericParseJSON $ withPrefixRemoval 4 defaultOptions
               
 instance ToJSON User where
-  toEncoding = genericToEncoding $ withPrefixRemoval 4
+  toEncoding = genericToEncoding $ withPrefixRemoval 4 defaultOptions
 
 newtype User' = User' { user :: User }
   deriving (Eq, Generic, Show)
@@ -85,10 +85,10 @@ data Article = Article
   } deriving (Eq, Generic, Show)
 
 instance FromJSON Article where
-  parseJSON = genericParseJSON $ withPrefixRemoval 7
+  parseJSON = genericParseJSON $ withPrefixRemoval 7 defaultOptions
 
 instance ToJSON Article where
-  toEncoding = genericToEncoding $ withPrefixRemoval 7
+  toEncoding = genericToEncoding $ withPrefixRemoval 7 defaultOptions
 
 newtype Article' = Article' { article :: Article }
   deriving (Eq, Generic, Show)
@@ -118,10 +118,10 @@ data Comment = Comment
   } deriving (Eq, Generic, Show)
 
 instance FromJSON Comment where
-  parseJSON = genericParseJSON $ withPrefixRemoval 7
+  parseJSON = genericParseJSON $ withPrefixRemoval 7 defaultOptions
               
 instance ToJSON Comment where
-  toEncoding = genericToEncoding $ withPrefixRemoval 7
+  toEncoding = genericToEncoding $ withPrefixRemoval 7 defaultOptions
 
 newtype Comment' = Comment' { comment :: Comment }
   deriving (Eq, Generic, Show)
