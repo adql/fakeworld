@@ -8,7 +8,6 @@ import Brick
 import qualified Brick.Widgets.Center as C
 import Data.Function ((&))
 import Data.Maybe (fromJust)
-import qualified Data.Text as T
 
 import API.Response.Types
 import TUI.Common
