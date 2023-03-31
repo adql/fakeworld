@@ -14,11 +14,11 @@ module API.Response.Types
   ) where
 
 import Data.Aeson
-import Data.Char (toLower)
-import Data.List (uncons)
 import Data.Text (Text)
 import GHC.Generics
 import Data.Time.Clock (UTCTime(..))
+
+import API.Common
 
 data Profile = Profile
   { profileUsername  :: Text
@@ -138,9 +138,3 @@ instance FromJSON Comments
 
 instance ToJSON Comments where
   toEncoding (Comments inner) = pairs ("comments" .= inner)
-
-withPrefixRemoval :: Int -> Options
-withPrefixRemoval len = defaultOptions { fieldLabelModifier = unPrefix }
-  where
-    unPrefix =
-      maybe "" (\(c,cs) -> toLower c : cs) . uncons . drop len
