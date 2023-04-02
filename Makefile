@@ -11,7 +11,7 @@ endif
 
 # Run with local server
 run:
-	make run-db && cabal run
+	make run-db && cabal run fakeworld
 
 # Run with external server
 run-external:
