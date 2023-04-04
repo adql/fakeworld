@@ -18,6 +18,7 @@ server = serveArticles
     :<|> serveComments
     :<|> serveProfile
     :<|> serveTags
+    :<|> authenticate
 
 serveArticles :: Maybe Tag
               -> Maybe Text
@@ -39,6 +40,9 @@ serveProfile = dbGetMaybe . getProfile
 
 serveTags :: Handler Tags
 serveTags = dbGet getAllTags
+
+authenticate :: AuthenticateBody -> Handler User'
+authenticate _body = throwError err418 --not yet implemented
 
 userAPI :: Proxy API
 userAPI = Proxy

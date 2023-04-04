@@ -4,11 +4,15 @@
 
 module API.Request.Types
   ( API
+  , AuthenticateBody(..)
   ) where
 
+import Data.Aeson
 import Data.Text
+import GHC.Generics
 import Servant
 
+import API.Common
 import API.Response.Types
 
 type API = APIBase :> (
@@ -17,7 +21,10 @@ type API = APIBase :> (
         :<|> GetComments
         :<|> GetProfile
         :<|> GetTags
+        :<|> Authenticate
              )
+
+-- Endpoints
 
 type APIBase = "api"
 
@@ -44,3 +51,22 @@ type GetProfile = "profiles"
 
 type GetTags = "tags"
             :> Get '[JSON] Tags
+
+type Authenticate = "users" :> "login"
+                 :> ReqBody '[JSON] AuthenticateBody
+                 :> Post '[JSON] User'
+
+-- Request bodies
+
+data AuthenticateBody = AuthenticateBody
+  { authenticateEmail :: Text
+  , authenticatePassword :: Text
+  } deriving (Eq, Generic, Show)
+
+instance FromJSON AuthenticateBody where
+  parseJSON = genericParseJSON $ withPrefixRemoval 12
+                               $ asObjectWithSingleField "user"
+  
+instance ToJSON AuthenticateBody where
+  toEncoding = genericToEncoding $ withPrefixRemoval 12
+                                 $ asObjectWithSingleField "user"

@@ -4,6 +4,7 @@ module API.Request
   , getComments
   , getProfile
   , getTags
+  , authenticate
   )
   where
 
@@ -24,9 +25,11 @@ getArticle :: Text -> ClientM Article'
 getComments :: Text -> ClientM Comments
 getProfile :: Text -> ClientM Profile'
 getTags :: ClientM Tags
+authenticate :: AuthenticateBody -> ClientM User'
 listArticles
   :<|> getArticle
   :<|> getComments
   :<|> getProfile
   :<|> getTags
+  :<|> authenticate
   = client (Proxy :: Proxy API)
