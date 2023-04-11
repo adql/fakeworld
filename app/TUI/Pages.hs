@@ -27,7 +27,7 @@ mainViewport st w = Widget Fixed Fixed $ do
 
 serveMainWidget :: St -> Widget Name
 serveMainWidget st  = case stCurrentPage st of
-  HomePage           -> homePage st
-  ArticlePage        -> articlePage st
-  NotImplementedPage -> notImplementedPage st --for development
-  _                  -> undefined
+  HomePage               -> homePage st
+  ArticlePage            -> articlePage st
+  NotImplementedPage msg -> notImplementedPage msg st --for development
+  _                      -> undefined

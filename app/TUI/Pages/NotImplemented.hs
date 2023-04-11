@@ -11,15 +11,14 @@ import TUI.Layout
 import TUI.Style
 import TUI.Types
 
-notImplementedPage :: St -> Widget Name
-notImplementedPage st = page st banner content
+notImplementedPage :: String -> St -> Widget Name
+notImplementedPage msg st = page st banner (content msg)
 
 banner :: St -> Widget Name
 banner _ =
   withAttr homepageBannerAttr $
   padTopBottom 2 $ C.hCenter $ str "Not Yet Implemented"
 
-content :: St -> Widget Name
-content _ =
-  limitWidthAndCenter bodyWidth $
-  str "This is a work in progress..."
+content :: String -> St -> Widget Name
+content msg _ =
+  limitWidthAndCenter bodyWidth $ str msg

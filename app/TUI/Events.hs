@@ -88,12 +88,6 @@ openArticle slug = do
                    , stArticleCurrent = article'
                    }
 
--- For development
-openNotImplemented :: EventM Name St ()
-openNotImplemented = do
-  updateLinks []
-  modify $ \s -> s { stCurrentPage = NotImplementedPage }
-
 mkFeedLinks :: [Article] -> [Link]
 mkFeedLinks = map $ \article' ->
   let slug = articleSlug article' in
@@ -176,3 +170,25 @@ navConduitLink = Link NavConduit openHomeGlobal
 navHomeLink = Link NavHome openHomeGlobal
 navSignInLink = Link NavSignIn openNotImplemented
 navSignUpLink = Link NavSignUp openNotImplemented
+
+-- For development --
+
+withLocallyNotImplemented :: EventM Name St () -> EventM Name St ()
+withLocallyNotImplemented e = do
+  BaseUrl _ host _ _ <- gets stBaseUrl
+  if host == "localhost"
+    then openLocallyNotImplemented
+    else e
+
+openNotImplemented ::EventM Name St ()
+openNotImplemented = openNotImplemented' "This is a work in progress..."
+
+openLocallyNotImplemented ::EventM Name St ()
+openLocallyNotImplemented =
+  openNotImplemented' "This section is only implemented on the front-end. \
+                      \Use \"make run-external\" to run the app with external API."
+
+openNotImplemented' :: String -> EventM Name St ()
+openNotImplemented' msg = do
+  updateLinks []
+  modify $ \s -> s { stCurrentPage = NotImplementedPage msg}

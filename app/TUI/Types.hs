@@ -49,7 +49,7 @@ data Page = HomePage
           | SettingsPage
           | CreateEditArticlePage
           | ArticlePage
-          | NotImplementedPage --for development
+          | NotImplementedPage String --for development
 
 data Link = Link
   { linkName :: Name
