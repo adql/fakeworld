@@ -27,6 +27,9 @@ common common
                   , http-types ^>=0.12.3
                   , mtl ^>=2.2.2
                   , optparse-applicative ^>= 0.17.0.0
+                  , servant-auth ^>=0.4.1.0
+                  , servant-auth-client ^>=0.4.1.0
+                  , servant-auth-server ^>=0.4.7.0
                   , servant-client ^>=0.19
                   , servant-server ^>=0.19.2
                   , text ^>=2.0.1

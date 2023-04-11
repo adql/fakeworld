@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
 module Server
@@ -7,6 +8,7 @@ module Server
 import Data.Text (Text)
 import Network.Wai
 import Servant
+import Servant.Auth.Server
 
 import API.Request.Types
 import API.Response.Types
@@ -18,6 +20,7 @@ server = serveArticles
     :<|> serveComments
     :<|> serveProfile
     :<|> serveTags
+    :<|> serveUser
     :<|> authenticate
 
 serveArticles :: Maybe Tag
@@ -41,11 +44,23 @@ serveProfile = dbGetMaybe . getProfile
 serveTags :: Handler Tags
 serveTags = dbGet getAllTags
 
+serveUser :: AuthResult AuthenticatedUser -> Handler User'
+serveUser _cred = notImplemented
+
 authenticate :: AuthenticateBody -> Handler User'
-authenticate _body = throwError err418 --not yet implemented
+authenticate _body = notImplemented
+
+-- convenience for implementing the front-end first
+notImplemented :: Handler a
+notImplemented = throwError err418
 
 userAPI :: Proxy API
 userAPI = Proxy
 
 app :: Application
-app = serve userAPI server
+app = serveWithContext userAPI cfg server
+  where
+    cfg = defaultCookieSettings :. jwtSettings :. EmptyContext
+    -- Dummy JWT while authentication is still not implemented on the
+    -- server side
+    jwtSettings = defaultJWTSettings $ fromSecret "NOT IMPLEMENTED"

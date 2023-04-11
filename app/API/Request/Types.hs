@@ -5,24 +5,28 @@
 module API.Request.Types
   ( API
   , AuthenticateBody(..)
+  , AuthenticatedUser
   ) where
 
 import Data.Aeson
 import Data.Text
 import GHC.Generics
 import Servant
+import Servant.Auth
+import Servant.Auth.JWT
 
 import API.Common
 import API.Response.Types
 
 type API = APIBase :> (
-             ListArticles
-        :<|> GetArticle
-        :<|> GetComments
-        :<|> GetProfile
-        :<|> GetTags
-        :<|> Authenticate
-             )
+           ListArticles
+      :<|> GetArticle
+      :<|> GetComments
+      :<|> GetProfile
+      :<|> GetTags
+      :<|> GetUser
+      :<|> Authenticate
+           )
 
 -- Endpoints
 
@@ -52,9 +56,25 @@ type GetProfile = "profiles"
 type GetTags = "tags"
             :> Get '[JSON] Tags
 
+type GetUser = "user"
+            :> WithAuth
+            :> Get '[JSON] User'
+
+-- Authentication
+
 type Authenticate = "users" :> "login"
                  :> ReqBody '[JSON] AuthenticateBody
                  :> Post '[JSON] User'
+
+type WithAuth = Auth '[JWT] AuthenticatedUser
+
+data AuthenticatedUser = AuthenticatedUser { authUsername :: Text }
+  deriving (Eq, Show, Read, Generic)
+
+instance FromJSON AuthenticatedUser
+instance ToJSON AuthenticatedUser
+instance FromJWT AuthenticatedUser
+instance ToJWT AuthenticatedUser
 
 -- Request bodies
 
