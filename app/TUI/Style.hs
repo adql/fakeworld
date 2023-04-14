@@ -98,9 +98,6 @@ separatorAttr = attrName "paleDD" <> attrName "feedSep"
 tagBoxBgAttr = attrName "tagBoxBg"
 tagBoxTagAttr = attrName "tagBoxTax"
 
-style :: Style -> Attr
-style = withStyle defAttr
-
 pale :: Int -> Attr
 pale = fg . gray
 
