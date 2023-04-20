@@ -28,7 +28,7 @@ initialSt baseUrl dark =
      }
 
 tui :: App St e Name
-tui = App { appDraw = \st -> [mainViewport st $ serveMainWidget st]
+tui = App { appDraw = \st -> [servePage st]
           , appChooseCursor = neverShowCursor
           , appHandleEvent = appEvent
           , appStartEvent = initiateApp

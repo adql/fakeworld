@@ -23,12 +23,13 @@ page :: St
      -> (St -> Widget Name)
      -> Widget Name
 page st banner content =
-  vBox [ navigation st
-       , banner st &
-         padBottom (Pad 1)
-       , content st
-       -- the footer is rendered directly in the Pages.mainViewport to
-       -- make it stick to the bottom
+  vBox [ viewport MainViewport Vertical $ vBox
+           [ navigation st
+           , banner st &
+             padBottom (Pad 1)
+           , content st
+           ]
+       , footer st
        ]
 
 navigation :: St -> Widget Name
