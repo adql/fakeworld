@@ -18,6 +18,13 @@ import TUI.Common.Links
 import TUI.Style
 import TUI.Types
 
+-- Common sizes
+bodyWidth,
+  commentSectionWidth
+  :: Int
+bodyWidth = 120
+commentSectionWidth = bodyWidth * 2 `div` 3
+
 page :: St
      -> (St -> Widget Name)
      -> (St -> Widget Name)
@@ -54,12 +61,6 @@ footer st =
 
 limitWidthAndCenter :: Int -> Widget n -> Widget n
 limitWidthAndCenter w = C.hCenter . hLimit w
-
-bodyWidth,
-  commentSectionWidth
-  :: Int
-bodyWidth = 120
-commentSectionWidth = bodyWidth * 2 `div` 3
 
 -- Similar to txtWrap, but for widgets, and with additional gap
 -- arguments; too long tags are cropped
