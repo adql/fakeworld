@@ -35,6 +35,7 @@ data St = St
   , stDarkMode :: Bool
   , stLinks :: [Link]
   , stFocus :: FocusRing Name
+  , stFocusChanged :: Bool
   , stArticles :: [Article]
   , stFilterOffset :: Int
   , stFilterTag :: Maybe Tag

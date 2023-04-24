@@ -21,9 +21,10 @@ link st name w = case getLink name st of
   Just l -> flip ( F.withFocusRing $ stFocus st ) l $
     \focused _l ->
       let attr = if focused then linkFocusedAttr else linkAttr
-          visibleIfFocused w' = if focused then visible w' else w'
+          visible' w0 = if focused && stFocusChanged st
+                        then visible w0 else w0
       in
-        withAttr attr $ visibleIfFocused w
+        withAttr attr $ visible' w
 
 linkMaybe :: St -> Maybe Name -> Widget Name -> Widget Name
 linkMaybe st name' w = let name = maybe NoName id name' in

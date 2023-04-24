@@ -23,17 +23,24 @@ import TUI.Common.Links
 import TUI.Types
 
 appEvent :: BrickEvent Name e -> EventM Name St ()
-appEvent e@(VtyEvent ve) = case ve of
-  EvKey KBackTab _     -> focusEvent F.focusPrev
-  EvKey (KChar '\t') _ -> focusEvent F.focusNext
-  EvKey KEnter _       -> openLink
-  _                    -> mainViewportEvent e
-appEvent e = resizeOrQuit e
+appEvent e@(VtyEvent ve) =
+  resetFocusChanged >>
+  case ve of
+    EvKey KBackTab _     -> focusEvent F.focusPrev
+    EvKey (KChar '\t') _ -> focusEvent F.focusNext
+    EvKey KEnter _       -> openLink
+    _                    -> mainViewportEvent e
+appEvent e = resetFocusChanged >> resizeOrQuit e
+
+resetFocusChanged :: EventM Name St ()
+resetFocusChanged = modify $ \s -> s { stFocusChanged = False }
 
 focusEvent :: (FocusRing Name -> FocusRing Name)
            -> EventM Name St ()
 focusEvent setter =
-  modify $ \st -> st { stFocus = setter (stFocus st) }
+  modify $ \st -> st { stFocus = setter (stFocus st)
+                     , stFocusChanged = True
+                     }
 
 openLink :: EventM Name St ()
 openLink = do

@@ -19,6 +19,7 @@ initialSt baseUrl dark =
      , stDarkMode = dark
      , stLinks = []
      , stFocus = F.focusRing []
+     , stFocusChanged = False
      , stArticles = []
      , stFilterOffset = 0
      , stFilterTag = Nothing
